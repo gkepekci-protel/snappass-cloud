@@ -1,0 +1,27 @@
+{
+  "name": "snappass-proxy",
+  "version": "1.0.0",
+  "description": "SnapPass — OPERA Cloud API Proxy (CORS çözümü)",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node server.js",
+    "build:client": "esbuild public/app.jsx --loader:.jsx=jsx --format=iife --target=es2019 --charset=ascii --outfile=public/app.bundle.js"
+  },
+  "dependencies": {
+    "cors": "^2.8.5",
+    "express": "^4.18.2",
+    "jsqr": "^1.4.0",
+    "node-fetch": "^3.3.2",
+    "nodemailer": "^6.10.1",
+    "pg": "^8.23.1",
+    "qrcode-generator": "^1.4.4",
+    "tesseract.js": "^6.0.1"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "devDependencies": {
+    "esbuild": "^0.21.5"
+  }
+}

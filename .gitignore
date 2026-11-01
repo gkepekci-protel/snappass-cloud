@@ -1,0 +1,14 @@
+node_modules/
+# Gizli anahtarlar, sertifikalar ve çalışma verisi (secret.key, OCR sertifikaları…)
+data/
+.env
+*.pfx
+*.pem
+*.key
+# Yedekler, geçici dosyalar, derleme çıktıları
+backups/
+temp/
+dist/
+# Protel servisinden türetilmiş kod
+decompiled/
+*.log

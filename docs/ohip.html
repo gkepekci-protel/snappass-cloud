@@ -1,0 +1,150 @@
+<!doctype html>
+<html lang="tr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>OHIP Kurulum Bilgisi</title>
+<link rel="icon" href="/admin/protel-logo.svg" type="image/svg+xml">
+<link rel="stylesheet" href="/yardim/doc.css?v=1">
+</head>
+<body>
+<div class="bar no-print">
+  <b>SnapPass · OHIP Kurulum Bilgisi</b><span class="sp"></span>
+  <button type="button" onclick="window.print()">🖨 Yazdır / PDF</button>
+  <a href="/admin" onclick="if (history.length > 1) { history.back(); return false; }">← Geri dön</a>
+</div>
+<main>
+<h1>OHIP Kurulum Bilgisi</h1>
+<p class="sub">SnapPass'ı bir otelin OPERA Cloud'una bağlamak için Oracle tarafında yapılacaklar. Bu adımlar SnapPass'a OHIP bilgisi girilmeden <b>önce</b> yapılır.</p>
+
+<div class="toc no-print"><b>İçindekiler</b>
+<ol>
+  <li><a href="#ozet">Ne gerekiyor?</a></li>
+  <li><a href="#app">1. Application (AppKey) oluşturma</a></li>
+  <li><a href="#client">2. Client ID oluşturma</a></li>
+  <li><a href="#mlac">3. Module Level Access Control</a></li>
+  <li><a href="#sens">4. Sensitive Data</a></li>
+  <li><a href="#snappass">5. SnapPass'a girilecek bilgiler</a></li>
+</ol></div>
+
+<h2 id="ozet">Ne gerekiyor?</h2>
+<p>SnapPass'a girilecek OHIP bilgileri ve Oracle'daki karşılıkları:</p>
+<div class="tw"><table>
+  <tr><th>SnapPass alanı</th><th>Oracle'da nereden alınır</th></tr>
+  <tr><td>HostName</td><td>Developer Portal → <b>Environments</b> → ortamın <b>View Details</b> sayfasındaki <b>Gateway URL</b> değeri.</td></tr>
+  <tr><td>AppKey</td><td>Uygulama (ör. KBS) kaydedilince oluşur: Developer Portal → <b>Applications</b> → uygulama kartındaki <b>Application Key</b> (<i>Copy</i> ile kopyalanır).</td></tr>
+  <tr><td>CLIENT_ID / CLIENT_SECRET</td><td>Uygulamaya bağlı yeni oluşturulan Client ID ve parolası (aşağıda).</td></tr>
+  <tr><td>EnterpriseId</td><td>OPERA Cloud Enterprise kimliği (ör. BHME, MAG).</td></tr>
+  <tr><td>Scope</td><td>Genelde boş bırakılır (varsayılan kullanılır).</td></tr>
+  <tr><td>Ortam</td><td>Customer (bedelsiz) ya da Partner (paket başına ücretli).</td></tr>
+</table></div>
+<div class="warn"><b>Gizlilik:</b> AppKey, Client ID ve özellikle Client Secret gizli bilgidir. Ekran görüntüsü, e-posta ya da sohbetle paylaşmayın; yalnızca SnapPass yönetim panelindeki OHIP formuna yazın (şifreli saklanır).</div>
+
+<h2 id="app">1. Application (AppKey) oluşturma</h2>
+<p>SnapPass için (ör. KBS) ayrı bir uygulama kaydedilir; <b>AppKey</b> bu uygulamadan alınır.</p>
+<ol>
+  <li>Oracle Hospitality <b>Developer Portal</b>'a (Customer Portal üzerinden) girin → üst menüden <span class="ui">Applications</span> → <span class="ui">My Applications</span> sekmesi.</li>
+  <li>Sağ üstteki <span class="ui">Register Application</span> düğmesine basın. Form birkaç adımdır; ilk adım <i>Application Details</i>'tir.</li>
+</ol>
+<h3>Adım 1 / 2 · Application Details</h3>
+<div class="tw"><table>
+  <tr><th>Alan</th><th>Ne yazılır</th></tr>
+  <tr><td>Application Name <b>*</b></td><td>Uygulamanın adı. KBS için kullanılan örnek: <i>Kimlik Bildirim Sistemi</i>.</td></tr>
+  <tr><td>Description</td><td>İsteğe bağlı kısa açıklama. KBS için kullanılan örnek: <i>1774 Sayılı Kimlik Bildirme Kanunu kapsamında konaklayan misafirlerin ve çalışanların kimlik bilgilerini Emniyet Genel Müdürlüğü veya Jandarma Genel Komutanlığı'na elektronik ortamda anlık olarak bildirmesini sağlayan yasal bir sistemdir.</i></td></tr>
+  <tr><td>Application Types</td><td>Listeden uygulama türü(leri) seçilir.</td></tr>
+  <tr><td>Environment</td><td><b>Production</b> (canlı otel) ya da <b>Non Production</b> (test). Varsayılan Production gelir.</td></tr>
+  <tr><td>Business Justification <b>*</b></td><td>Uygulamanın neden oluşturulduğu: <b>en az 40, en çok 200 karakter</b>. KBS için kullanılan örnek: <i>Kimlik Bildirim Sistemi (KBS), 1774 Sayılı Kimlik Bildirme Kanunu</i>.</td></tr>
+  <tr><td>Onay kutusu</td><td>Oracle'ın beyan metni: uygulama <i>Customer-Owned Internal Application</i> olmalı ve üçüncü taraf bağımsız yazılım firmalarının erişimine açılmamalıdır; aksi Oracle politikasına aykırıdır ve uygulamanın kapatılmasına ya da API çağrı ücretlerine yol açabilir. Metni okuyup otel adına yetkili kişi işaretler.</td></tr>
+  <tr><td>Contact Details</td><td>Bu bilgiler uygulamayla ilgili bildirimlerde kullanılır; <b>canlı uygulamada büyük bir olay olursa Oracle bu adresle iletişime geçer ve yanıt gelmezse canlı uygulama devre dışı bırakılır</b>. Protel her kurulumda aynı izlenen e-Destek bilgisini kullanır:
+    <div class="tw"><table>
+      <tr><td>First Name</td><td><b>Protel</b></td></tr>
+      <tr><td>Last Name</td><td><b>E-Destek</b></td></tr>
+      <tr><td>Email</td><td><b>operacloudmonitor@protel.com.tr</b></td></tr>
+      <tr><td>Phone (acil durum için)</td><td><b>0085033377 85</b></td></tr>
+      <tr><td>Company Name</td><td>Protel şirket adı</td></tr>
+    </table></div></td></tr>
+</table></div>
+<ol start="3">
+  <li>Alanları doldurup <span class="ui">Next</span>'e basın.</li>
+</ol>
+<h3>Kayıt sonrası</h3>
+<ul>
+  <li>Kayıt bitince uygulama <span class="ui">Applications</span> listesinde <b>New</b> etiketiyle, en üstte görünür (ör. <i>Kimlik Bildirim Sistemi · Production</i>).</li>
+  <li>Kartta <b>Application Key</b> maskeli gösterilir (yalnız son 4 hane görünür). <span class="ui">Copy</span> ile anahtar panoya kopyalanır; SnapPass'taki <b>AppKey</b> alanına yapıştırılır. Tam anahtarı e-posta ya da sohbetle paylaşmayın.</li>
+  <li>Ayrıntılar için kartın altındaki <span class="ui">View details</span> açılır. <b>Overview</b> sekmesi uygulamanın açıklamasını, ortamını, iş gerekçesini ve onay beyanını gösterir; diğer sekmeler: <i>Subscriptions, Events, Analytics, Alerts</i>.</li>
+  <li><b>Application Key</b> satırında <span class="ui">Show</span> (göster), <span class="ui">Copy</span> (kopyala) ve <span class="ui">Reissue</span> (yeniden üret) düğmeleri vardır. <b>Reissue eski anahtarı geçersiz kılar;</b> SnapPass'ta o anahtarı kullanan bağlantı kopar, yeni anahtarı OHIP formuna yeniden girmek gerekir.</li>
+</ul>
+
+<h2 id="client">2. Client ID oluşturma</h2>
+<p>Client ID, uygulamanın OHIP'e hangi otel ortamı (Environment) üzerinden bağlanacağını belirler.</p>
+<ol>
+  <li>Developer Portal'da üst menüden <span class="ui">Environments</span>'a girin. <span class="ui">My Environments</span> sekmesinde otelin ortamı listelenir (ör. <i>MAG COWORK ISTANBUL (mtce2-oc) · Production · Streaming Enabled · Germany Central (Frankfurt)</i>). Ortam adındaki kod (örnekte <b>mtce2-oc</b>) HostName'in ilk bölümüdür.</li>
+  <li>Ortamın kartındaki <span class="ui">View Details</span>'e basın.</li>
+</ol>
+<ol start="3">
+  <li>Ayrıntı sayfasında <span class="ui">Add Client</span>'a basın. Sihirbaz 4 adımdır: <b>Client Details → Modules → Assigned Hotels → Summary</b>.</li>
+</ol>
+<h3>Adım 1 / 4 · Client Details</h3>
+<ul>
+  <li><b>Client Name \*</b>: istemcinin adı (ör. <i>KBS</i>). Sonra bu adla tanınır.</li>
+  <li><span class="ui">Next</span> ile Modules adımına geçilir.</li>
+</ul>
+<h3>Adım 2 / 4 · Modules</h3>
+<p>Sayfanın üstünde <i>Permissions set for 0 of 40 modules</i> yazar; hiçbir modül seçili gelmez.</p>
+<ol>
+  <li><b>Sensitive Data</b> bölümündeki <span class="ui">Grant Sensitive Data Access</span> anahtarını <b>AÇIK</b> yapın (kimlik no okunabilsin diye). Bu ayarı client'ı oluştururken burada açmak yeterlidir; sonradan Edit ile de değiştirilebilir.</li>
+  <li><b>Configure Module Permissions</b> listesinden SnapPass'ın kullandığı modülleri seçin (modül adını açıp izinleri işaretleyin; bir izin seçilince bağımlı izinler başka modüllerde kendiliğinden açılabilir):
+    <div class="tw"><table>
+      <tr><th>SnapPass'ın yaptığı</th><th>Listedeki modül</th></tr>
+      <tr><td>Rezervasyon arama / okuma, beraberindeki ekleme</td><td><b>Reservation</b></td></tr>
+      <tr><td>Misafir profili okuma / güncelleme, kimlik belgesi yazma</td><td><b>Customer Relationship Management</b> ve <b>API for Customer Management Service</b></td></tr>
+      <tr><td>Zincir ve otel adı, zincirin otelleri</td><td><b>Enterprise Configuration</b></td></tr>
+      <tr><td>OPERA iş günü (business date)</td><td><b>Back Office Operations</b></td></tr>
+    </table></div></li>
+  <li><b>Kolay yol:</b> listenin başındaki <span class="ui">All Modules</span> kutusunu işaretlemek 40 modülün tümünü (tüm izinleriyle) seçer. <b>Dar yol:</b> yalnız yukarıdaki modülleri seçmek istemcinin yetkisini sınırlar; kimlik no gibi hassas veriye erişimi olan bir istemci için tercih edilir.</li>
+  <li><span class="ui">Next</span> ile <b>Assigned Hotels</b> adımına geçin.</li>
+</ol>
+<h3>Adım 3 / 4 · Assigned Hotels</h3>
+<ul>
+  <li>Ortamdaki oteller listelenir (otel adı ve <i>Property</i> kodu, ör. <b>MAGIST</b>). İstemcinin erişeceği otelleri işaretleyin; <span class="ui">All hotels</span> kutusu hepsini seçer. Sayfada <i>1 selected out of 1</i> gibi seçili sayı görünür.</li>
+  <li>SnapPass'a girilecek <b>HotelId</b>, buradaki Property kodudur (ör. MAGIST).</li>
+  <li><span class="ui">Next</span> ile <b>Summary</b> adımına geçin.</li>
+</ul>
+<h3>Adım 4 / 4 · Summary</h3>
+<ul>
+  <li>Özet ekranında seçimleri kontrol edip oluşturma düğmesine basın. İşlem bitince <b>Client ID</b> ve <b>Client Secret</b> gösterilir.</li>
+  <li><b>Client Secret'ı bu ekrandan hemen kopyalayıp güvenli bir yere (doğrudan SnapPass'taki OHIP formuna) yapıştırın;</b> sonradan yeniden görüntülenemeyebilir. Kaybolursa Oracle'da yenisi oluşturulur.</li>
+  <li>Client ID ve Client Secret'ı sohbet, e-posta ya da ekran görüntüsüyle paylaşmayın.</li>
+</ul>
+
+<h2 id="mlac">3. Module Level Access Control</h2>
+<ol>
+  <li>Otelin (ya da Enterprise'ın) <b>Customer Portal</b>'ına girin.</li>
+  <li>Sağ üst köşedeki kullanıcı menüsünü açın → <span class="ui">Global Administration</span>.</li>
+  <li><span class="ui">Controls</span> bölümünde <span class="ui">Module Level Access Control</span> anahtarına bakın: <b>zaten AÇIK ise bir şey yapmayın, KAPALI ise AÇIK yapın.</b></li>
+</ol>
+
+<h2 id="sens">4. Sensitive Data</h2>
+<p>Sensitive Data kapalıysa <b>kimlik no</b> bilgisi okunamaz.</p>
+<ol>
+  <li>Kullanılan Client ID'nin <b>Environment</b> tanımına <b>Manage</b> ile girin.</li>
+  <li><span class="ui">Edit</span> → <span class="ui">Module Permissions</span> → <span class="ui">Sensitive Data</span> → <span class="ui">Grant Sensitive Data Access</span> anahtarına bakın: <b>kapalıysa AÇIK yapın</b>, açıksa dokunmayın.</li>
+  <li><b>Customer</b> ortamında bu ayar Customer Portal'daki ilgili Environment tanımındadır.</li>
+  <li><b>Partner</b> ortamında ayar, otelin kayıtlı olduğu Customer Portal'da (Developer Portal) <span class="ui">Environments</span> → <span class="ui">Partner Connections</span> sekmesindedir (aşağıya bakın).</li>
+</ol>
+<h3>Partner ortamı için (Partner Connections)</h3>
+<ol>
+  <li>Developer Portal → <span class="ui">Environments</span> → <span class="ui">Partner Connections</span> sekmesi. Listede otelin ortamı görünür (ör. <i>MAG COWORK ISTANBUL (mtce2-oc) · Production · Germany Central (Frankfurt)</i>); soldaki okla açılınca altında bağlı partner tanımı çıkar.</li>
+  <li><i>Turkey</i> tanımına (ör. <b>turkey</b>, durumu <b>Approved</b>) girin. Sayfada <b>Environment Details</b>, <b>Module Permissions</b> (<i>Permissions set for 40 of 40 modules</i>) ve <b>Assigned Hotels</b> (ör. <i>1 selected out of 1 · MAGIST</i>) bölümleri bulunur; ikisinin de sağında <span class="ui">Edit</span> düğmesi vardır.</li>
+  <li><b>Module Permissions</b> → <span class="ui">Edit</span> açılan pencerede <b>Sensitive Data</b> altındaki <span class="ui">Grant Sensitive Data Access</span> anahtarına bakın: <b>zaten AÇIK ise bir şey yapmayın, KAPALI ise AÇIK yapın.</b> Aynı pencerede modüller listelenir (<span class="ui">All Modules</span> hepsini seçer). <span class="ui">Save</span> ile kaydedilir.</li>
+  <li>Sayfanın altında <span class="ui">Cancel</span>, <span class="ui">Revoke Access</span> ve <span class="ui">Update</span> düğmeleri bulunur. Değişiklik sonrası <span class="ui">Update</span> etkinleşirse ona basın. <b>Revoke Access</b> partner bağlantısının erişimini iptal eder; yanlışlıkla basılırsa SnapPass bağlantısı kopar.</li>
+</ol>
+
+<h2 id="snappass">5. SnapPass'a girilecek bilgiler</h2>
+<p>Elinizde şunlar olmalı: <b>AppKey</b> (Applications → ilgili uygulamanın kartı → Copy), <b>Client ID</b> ve <b>Client Secret</b> (Add Client → Summary), <b>HostName</b>, <b>EnterpriseId</b>. HostName, ortamın ayrıntı sayfasındaki <b>Gateway URL</b> değeridir (ör. <i>mtce2-oc</i> ortamı için <code>https://mtce2-oc.hospitality-api.eu-frankfurt-1.ocs.oraclecloud.com</code> biçiminde).</p>
+<p>Yukarıdaki adımlar bitince SnapPass yönetim panelinde: yeni otelde <span class="ui">➕ Otel ekle</span>, mevcut otelde otel sayfasındaki <span class="ui">OHIP Tanımları</span> (zincirde Enterprise sayfası) bölümüne HostName, AppKey, EnterpriseId, CLIENT_ID, CLIENT_SECRET ve Ortam'ı girip <span class="ui">Kaydet ve OHIP TEST</span> ile bağlantıyı deneyin.</p>
+
+<p class="foot">SnapPass · protel · Bu sayfa, OHIP formundaki <b>OHIP kurulum bilgisi</b> düğmesinden açılır; <b>Geri dön</b> forma geri götürür.</p>
+</main>
+</body>
+</html>

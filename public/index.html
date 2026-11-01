@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover"/>
+  <meta name="apple-mobile-web-app-capable" content="yes"/>
+  <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate"/>
+  <meta http-equiv="Pragma" content="no-cache"/>
+  <meta http-equiv="Expires" content="0"/>
+  <title>SnapPass — OPERA Cloud</title>
+  <script src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+  <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+  <script src="/mrz-templates.js"></script>
+  <script src="/mrz-parser.js"></script>
+  <script src="/iso-countries.js"></script>
+  <script src="/i18n.js"></script>
+  <script src="/kbs-countries.js"></script>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html, body { min-height: 100dvh; }
+    body {
+      background: #EEF4FB;
+      font-family: 'DM Sans', 'Segoe UI', sans-serif;
+      overscroll-behavior: none;
+      -webkit-font-smoothing: antialiased;
+      text-rendering: optimizeLegibility;
+    }
+    #root { min-height: 100dvh; }
+    .boot {
+      min-height: 100dvh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #1B3C6D;
+      font-size: 14px;
+      font-weight: 700;
+      letter-spacing: .02em;
+    }
+  </style>
+</head>
+<body>
+  <div id="root">
+    <div class="boot">SnapPass yukleniyor...</div>
+  </div>
+  <script src="/app.bundle.js"></script>
+</body>
+</html>

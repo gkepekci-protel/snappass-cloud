@@ -1,0 +1,232 @@
+<!doctype html>
+<html lang="tr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>SnapPass Kullanıcı Rehberi</title>
+<link rel="icon" href="/admin/protel-logo.svg" type="image/svg+xml">
+<link rel="stylesheet" href="/yardim/doc.css?v=1">
+</head>
+<body>
+<div class="bar no-print">
+  <b>SnapPass · Kullanıcı Rehberi</b><span class="sp"></span>
+  <button type="button" onclick="window.print()">🖨 Yazdır / PDF</button>
+  <a href="/">← Uygulamaya dön</a>
+</div>
+<main>
+<h1>SnapPass Kullanıcı Rehberi</h1>
+<p class="sub">Resepsiyon kullanıcıları için: misafir belgesi tarama, OPERA'ya kaydetme ve KBS bildirimi.</p>
+
+<div class="toc no-print"><b>İçindekiler</b>
+<ol>
+  <li><a href="#giris">İlk giriş ve parola</a></li>
+  <li><a href="#ekran">Ekranı tanıyalım</a></li>
+  <li><a href="#bul">Misafiri bulmak</a></li>
+  <li><a href="#tara">Belge tarama</a></li>
+  <li><a href="#kaydet">Bilgileri kontrol edip kaydetmek</a></li>
+  <li><a href="#beraber">Beraberindeki misafir eklemek</a></li>
+  <li><a href="#kbs">KBS (Kimlik Bildirim Sistemi)</a></li>
+  <li><a href="#sorun">Sık karşılaşılan durumlar</a></li>
+</ol></div>
+
+<h2 id="giris">1. İlk giriş ve parola</h2>
+<h3>Davetiye ile parola belirleme</h3>
+<ol>
+  <li>Yöneticiniz sizi eklediğinde <b>"SnapPass – kullanıcı davetiyesi"</b> başlıklı bir e-posta gelir.</li>
+  <li>E-postadaki bağlantıyı açın. Bağlantı <b>7 gün</b> geçerlidir ve bir kez kullanılabilir.</li>
+  <li><span class="ui">Parola</span> ve <span class="ui">Parola (tekrar)</span> alanlarını doldurup <span class="ui">Parolamı belirle ve giriş yap</span>'a basın.</li>
+</ol>
+<div class="note">Parola en az 8 karakter olmalı, harf ve rakam içermeli, kullanıcı adınızı içermemelidir.</div>
+<p>Bağlantının süresi dolduysa ya da "Bağlantı geçersiz" yazıyorsa yöneticinizden yeni davetiye isteyin.</p>
+
+<h3>Giriş yapma</h3>
+<ol>
+  <li>Giriş sayfasında <span class="ui">Kullanıcı adı</span> ve <span class="ui">Parola</span>'yı yazıp <span class="ui">Giriş yap</span>'a basın.</li>
+  <li>Otelinizde iki adımlı doğrulama açıksa <b>"Giriş kodu"</b> ekranı gelir:
+    <ul>
+      <li>Yöneticinizin sizin için seçtiği yönteme göre: e-postanıza gelen 6 haneli kodu (10 dakika geçerli) ya da Google Authenticator uygulamasındaki kodu yazın.</li>
+      <li>Kendi cihazınızdaysanız <span class="ui">Bu cihazı 15 gün hatırla</span>'yı işaretleyebilirsiniz.</li>
+      <li>Kod gelmediyse <span class="ui">Kod gelmedi, yeniden gönder</span>.</li>
+    </ul>
+  </li>
+</ol>
+<div class="warn">Art arda <b>5 hatalı</b> denemede hesap <b>15 dakika</b> kilitlenir. Parolanızdan emin değilseniz <span class="ui">Parolamı unuttum</span>'u kullanın.</div>
+
+<h3>Parolamı unuttum / parola değiştirme</h3>
+<ul>
+  <li>Giriş sayfasında <span class="ui">Parolamı unuttum</span> → kullanıcı adınızı ya da e-postanızı yazın → <span class="ui">Bağlantı gönder</span>. Gelen bağlantıdan yeni parolanızı belirleyin.</li>
+  <li>Giriş yaptıktan sonra parolanızı değiştirmek için: <a href="/account/password">Parola değiştir</a> sayfası.</li>
+</ul>
+
+<h2 id="ekran">2. Ekranı tanıyalım</h2>
+<p>Üst çubukta soldan sağa:</p>
+<div class="tw"><table>
+  <tr><th>Öğe</th><th>Ne işe yarar</th></tr>
+  <tr><td>Otel adı</td><td>Hangi otelde çalıştığınızı ve adınızı gösterir.</td></tr>
+  <tr><td>🔔 Zil</td><td>OPERA (OHIP) ya da KBS bağlantısında sorun olursa kırmızı sayı çıkar. Yeni bir sorun ilk kez görüldüğünde <b>"Sistem uyarısı"</b> penceresi açılır, <span class="ui">Anladım</span> ile kapatılır. Sorun düzelince uyarı kendiliğinden "Çözüldü" olur.</td></tr>
+  <tr><td>TR / EN</td><td>Ekran dilini değiştirir.</td></tr>
+  <tr><td>❔ Yardım</td><td>Bu rehberi açar.</td></tr>
+  <tr><td>Çıkış</td><td>Oturumu kapatır. Ortak kullanılan cihazlarda iş bitince çıkış yapın.</td></tr>
+</table></div>
+<p>Sekmeler: <span class="ui">🛬 Gelenler</span>, <span class="ui">🏨 Konaklayanlar</span>, (otelinizde açıksa) <span class="ui">🛡 KBS</span> ve <span class="ui">📜 Değişiklikler</span>.</p>
+<p><b>📜 Değişiklikler</b> sekmesi oteldeki kullanıcıların işlemlerini gösterir: giriş/çıkış, OPERA'ya kaydedilen profil ve belgeler, eklenen beraberindekiler, KBS bağlantısı ve gönderimleri. Tarih aralığı seçip <span class="ui">Göster</span>'e basın; arama kutusuyla kişiye, işleme ya da profil numarasına göre süzün. Profil ve belge kayıtlarında değişen her alanın eski ve yeni değeri yazılır (ör. <i>Soyadı: Kepek → Koko</i>); bunun dışında misafir adı ve kimlik numarası logda tutulmaz.</p>
+<div class="note">Ekranın altında <b>"Uygulamanın yeni sürümü var. Yenileyin."</b> yazarsa <span class="ui">Yenile</span>'ye basın.</div>
+
+<h2 id="bul">3. Misafiri bulmak</h2>
+<ol>
+  <li>Bugün gelecek misafir için <span class="ui">🛬 Gelenler</span>, oteldeki misafir için <span class="ui">🏨 Konaklayanlar</span> sekmesini seçin.</li>
+  <li>Arama türünü seçin: <span class="ui">🔤 Soyada Göre</span> (en az 2 harf) ya da <span class="ui">🛏 Oda No'ya Göre</span>.</li>
+  <li>Aranacak değeri yazıp <span class="ui">Ara</span>'ya basın.</li>
+  <li>Listede misafirin adı, durumu (Rezerve, Konaklıyor…), konfirmasyon no, oda tipi, kişi sayısı ve giriş–çıkış tarihleri görünür. Aynı rezervasyondaki diğer kişiler <b>"👥 Beraberindeki"</b> etiketiyle altında listelenir.</li>
+  <li>Misafirin satırına dokunun. Satır <b>SEÇİLDİ</b> olur ve profil özeti yüklenir.</li>
+</ol>
+<p>Seçili misafir için üç düğme çıkar:</p>
+<ul>
+  <li><span class="ui">📷 Belge Tara</span> – kimlik / pasaportu kamerayla okur.</li>
+  <li><span class="ui">✏️ Düzenle</span> – taramadan, OPERA'daki bilgilerle formu açar.</li>
+  <li><span class="ui">👥 Beraberindeki Ekle</span> – rezervasyona kişi ekler (rezervasyondaki kişi sayısı dolmadıysa görünür).</li>
+</ul>
+
+<h2 id="tara">4. Belge tarama</h2>
+<ol>
+  <li><span class="ui">📷 Belge Tara</span>'ya basın. İlk kullanımda tarayıcı <b>kamera izni</b> ister; <b>İzin ver</b> deyin.</li>
+  <li>Kimliğin arka yüzünü ya da pasaportun fotoğraflı sayfasını çerçeveye sığdırın. Alttaki iki-üç satırlık yazı (MRZ) net görünmelidir.</li>
+  <li>Ekrana dokunun (<b>"MRZ taramak için dokun"</b>). Okununca <b>"MRZ okundu!"</b> yazar ve form dolar.</li>
+</ol>
+<h3>Okunmazsa</h3>
+<ul>
+  <li><span class="ui">Net Kare Al</span> ile sabit bir kare alıp yeniden deneyin; belgeyi biraz uzaklaştırın, yansımayı önleyin.</li>
+  <li>Ortam karanlıksa <span class="ui">Işık Aç</span> (çoğunlukla Android Chrome'da çalışır).</li>
+  <li>Olmuyorsa <span class="ui">Manuel Giriş →</span> ile bilgileri elle yazın.</li>
+</ul>
+<div class="warn">Kamera yalnızca <b>https://</b> ile açılan adreste çalışır. "Kamera kullanılamıyor — mobilde HTTPS gerekli" yazıyorsa yöneticinizin verdiği https adresini kullanın. Belge fotoğrafı OPERA'ya yüklenmez; yalnızca okunan bilgiler kaydedilir.</div>
+
+<h2 id="kaydet">5. Bilgileri kontrol edip kaydetmek</h2>
+<p>Form iki bölümdür: <b>Belge Verisi</b> (Uyruk, Belge Tipi, Belge Numarası) ve <b>Kişisel Bilgiler</b> (Ad, İkinci Ad, Soyad, Doğum Tarihi, Doğum Yeri, Cinsiyet).</p>
+<ol>
+  <li>Taranan bilgileri belgeyle karşılaştırın, gerekirse düzeltin.</li>
+  <li><span class="ui">Kaydet</span>'e basın. Bilgiler misafirin OPERA profiline ve kimlik belgesine yazılır.</li>
+  <li><b>"Başarıyla Gönderildi"</b> ekranı çıkar.</li>
+</ol>
+<h3>Kurallar</h3>
+<ul>
+  <li><b>Uyruk</b> ve <b>belge numarası</b> zorunludur.</li>
+  <li>T.C. vatandaşlarında belge tipi <b>TCKN</b> olmalı ve 11 haneli kimlik no girilmelidir.</li>
+  <li>Yabancı misafirde <b>doğum yeri</b> zorunludur (KBS bunu istiyor).</li>
+</ul>
+<div class="note"><b>"Bu kimlik numarası başka bir profilde kayıtlı"</b> uyarısı çıkarsa: Aynı kişi OPERA'da iki ayrı profilde olabilir. Doğru misafiri seçtiğinizden eminseniz <span class="ui">Yine de bu profile kaydet</span>; emin değilseniz vazgeçip ön büroya danışın.</div>
+<p>Kaydetmek SnapPass'ta <b>check-in yapmaz</b>; check-in işlemini OPERA'da her zamanki gibi yapın.</p>
+
+<h3>Aynı kişinin iki profili: birleştirme ve profil değiştirme</h3>
+<p>Eşleşme uyarısındaki her profil kartında, <b>yetkiniz varsa</b> aşağıdaki düğmeler de görünür. Yetkiler varsayılan olarak <b>kapalıdır</b>; gerekiyorsa Protel yöneticisinden isteyin. Üç yetki ayrıdır, biri size açıksa diğerleri görünmez.</p>
+<div class="tw"><table>
+  <tr><th>Düğme</th><th>Yetki</th><th>Ne yapar</th></tr>
+  <tr><td><span class="ui">Profilleri birleştir</span></td><td>Profilleri birleştirebilir</td><td>İki profili OPERA'da tek profilde toplar. <b>Kalacak profili siz seçersiniz</b> (<span class="ui">Listedeki</span> ya da <span class="ui">Rezervasyondaki</span>); varsayılan listedeki profildir. Diğer profil kaybolur. İki aşamalı onay sorulur ve <b>OPERA'da geri alınamaz</b>.</td></tr>
+  <tr><td><span class="ui">Rezervasyonun ana profilini bununla değiştir</span></td><td>Rezervasyonun ana profilini değiştirebilir</td><td>Rezervasyondaki ana misafir profilini seçilen profille değiştirir. Beraberindekiler korunur.</td></tr>
+  <tr><td><span class="ui">Beraberindeki profili bununla değiştir</span></td><td>Beraberindeki profilini değiştirebilir</td><td>Beraberindeki misafirin profilini seçilen profille değiştirir (satır beraberindeki misafire aitse görünür).</td></tr>
+</table></div>
+<ul>
+  <li>Profil değiştirme <b>yalnız misafir profilini</b> değiştirir; yetişkin / çocuk sayısı, oda, tarih ve fiyat değişmez.</li>
+  <li>Kimlik numarası aynı kaldığı için KBS'de kişi aynı kişi olarak eşleşir; SnapPass'taki KBS gönderim kayıtları yeni profil numarasına otomatik bağlanır, <b>KBS'ye yeniden bir şey gönderilmez</b>.</li>
+  <li>İşlem bitince liste yenilenir. Her işlem, eski ve yeni profil numaralarıyla işlem kaydına yazılır.</li>
+  <li>Emin değilseniz işlem yapmayın; birleştirme geri alınamadığı için kalacak profili dikkatle seçin.</li>
+</ul>
+
+<h2 id="beraber">6. Beraberindeki misafir eklemek</h2>
+<ol>
+  <li>Ana misafiri seçip <span class="ui">👥 Beraberindeki Ekle</span>'ye basın.</li>
+  <li>Kişi OPERA'da zaten varsa <span class="ui">Profil Ara</span> ile bulup <span class="ui">Seç</span>.</li>
+  <li>Yoksa <span class="ui">MRZ Tara</span> ile belgesini okutun ya da <span class="ui">+ Yeni Profil Oluştur</span> ile elle girin.</li>
+  <li><span class="ui">Rezervasyona Ekle</span>'ye basın. <b>"Beraberindeki Eklendi!"</b> görünür.</li>
+</ol>
+<div class="note">"Sistemde bu kişiyle eşleşen profil var" uyarısında, aynı kişiyse <span class="ui">Bu profili kullan</span>'ı seçin; böylece mükerrer profil oluşmaz.</div>
+
+<h2 id="kbs">7. KBS (Kimlik Bildirim Sistemi)</h2>
+<p>KBS sekmesi otelde konaklayanları Emniyet'in KBS sistemiyle karşılaştırır; giriş, çıkış ve oda değişikliklerini sizin onayınızla KBS'ye gönderir.</p>
+<div class="warn"><b>KBS canlı Emniyet sistemidir.</b> Uygulama KBS'ye <b>hiçbir şeyi kendiliğinden göndermez</b>; her gönderim düğmeye basıp onaylamanızla yapılır. Göndermeden önce listeyi kontrol edin.</div>
+
+<h3>7.1 KBS'ye bağlanma (KBS Bilgileri)</h3>
+<ol>
+  <li><span class="ui">🛡 KBS</span> → <span class="ui">⚙️ KBS Bilgileri</span>.</li>
+  <li>KBS giriş bilgileri (kullanıcı adı, TC kimlik no, parola) <b>otel için bir kez</b> girilir ve tüm kullanıcılar ortak kullanır. Bu bilgileri yalnız <b>KBS bilgileri yetkisi</b> olan kullanıcı görür ve değiştirir: ekranda gizli görünür, <span class="ui">✏️ Düzenle</span> ile açılır, <span class="ui">Kaydet</span> ile kaydedilir. Parola hiç geri gösterilmez. Yetkiniz yoksa bu bölümü görmezsiniz; yalnız bağlanırsınız.</li>
+  <li>Yetkili kullanıcı, yabancı misafirlerde doğum yeri genelde boşsa <b>"Yabancı misafirde doğum yeri boşsa uyruğu doğum yeri olarak gönder"</b> seçeneğini de buradan açabilir.</li>
+  <li><span class="ui">KBS'ye bağlan</span>'a basın. Telefonunuzdaki EGMSEC uygulamasının o anki kodunu yazın. (EGMSEC gizli anahtarı kayıtlıysa kod otomatik girilir ve bağlantı düşerse uygulama kendiliğinden yeniden bağlanır.)</li>
+  <li><b>"● Bağlandı"</b> yazınca hazırsınız. Bağlantı otel için tektir: bir kişi bağlanınca oteldeki herkes bağlı görür (kimin, saat kaçta bağladığı da yazar).</li>
+</ol>
+<div class="warn">Parolayı art arda yanlış girmek KBS hesabını kilitleyebilir; uygulama bu yüzden denemeler arasında bekletir. Aynı KBS kullanıcısıyla başka bir programda (ör. eski KBS uygulaması) aynı anda oturum açıksa iki oturum birbirini düşürür.</div>
+<p>Sunucu yeniden başlatılırsa ya da KBS oturumu kendiliğinden kapanırsa yeniden <span class="ui">KBS'ye bağlan</span> gerekir.</p>
+
+<h3>7.2 KBS Gönderim ekranı</h3>
+<p>KBS'ye bağlıyken uygulama KBS'deki aktif konaklayan listesini okur ve OPERA ile karşılaştırır. Kartlar:</p>
+<div class="tw"><table>
+  <tr><th>Kart</th><th>Anlamı</th><th>Ne yapmalı</th></tr>
+  <tr><td>🕒 Bekleyen</td><td>OPERA'da konaklıyor, KBS'de kaydı yok.</td><td>Kontrol edip giriş gönderin.</td></tr>
+  <tr><td>✓ KBS'de kayıtlı</td><td>KBS'de kaydı var (kim girmiş olursa olsun).</td><td>Bir şey yapmayın.</td></tr>
+  <tr><td>⚠ Eksik bilgi</td><td>KBS için gereken bilgi eksik (kimlik no, belge no, doğum tarihi/yeri, cinsiyet).</td><td><span class="ui">✏️ Düzenle</span> ile tamamlayın; tamamlanınca Bekleyen'e geçer.</td></tr>
+  <tr><td>! Hata</td><td>Son gönderim KBS'den hata aldı.</td><td>Mesajı okuyun, düzeltip <span class="ui">Tekrar gönder</span>.</td></tr>
+  <tr><td>🚪 Çıkış bekleyen</td><td>KBS'de aktif ama OPERA'da artık konaklamıyor (check-out olmuş).</td><td>Çıkışını yapın.</td></tr>
+  <tr><td>⧉ Mükerrer kayıt</td><td>KBS'de aynı kimlik ya da belge numarasıyla birden fazla aktif kayıt var (yalnız bilgi; KBS'ye bir şey gönderilmez).</td><td>Düzeltmeyi KBS'de yapın.</td></tr>
+  <tr><td>➤ Toplam</td><td>OPERA'daki tüm konaklayanlar.</td><td>—</td></tr>
+</table></div>
+<p>Kartın altındaki <span class="ui">Hepsi</span> / <span class="ui">Bugün giriş</span> / <span class="ui">Bugün çıkış</span> düğmeleri listeyi tarihe göre süzer; sayılar seçili karta göredir. Liste ekran açıkken kendiliğinden yenilenir (Customer ortamında 60 sn, Partner'da 120 sn); <span class="ui">Yenile</span> ile hemen yenileyebilirsiniz. "Son güncelleme" yanında KBS listesinin okunduğu saat yazar.</p>
+
+<h3>7.3 Giriş göndermek</h3>
+<ol>
+  <li><b>Bekleyen</b> kartına basın.</li>
+  <li>Göndermek istediğiniz misafirleri işaretleyin.</li>
+  <li><span class="ui">Seçilenleri gönder</span> → açılan pencerede isimleri kontrol edip <span class="ui">Gönder</span>.</li>
+  <li>Sonuç ekranın üstünde yazar: "Giriş: 2 başarılı" gibi. Hatalı olanlar mesajıyla listelenir.</li>
+</ol>
+<p><span class="ui">Bekleyenlerin tümünü gönder</span> tüm bekleyenleri tek seferde gönderir; yalnızca liste doğruysa kullanın.</p>
+<p><span class="ui">KBS'de zaten kayıtlı say</span>: KBS'ye bağlı değilken ya da misafir KBS'ye başka yoldan girilmiş ama eşleşmemişse, KBS'ye bir şey göndermeden "kayıtlı" olarak işaretler.</p>
+
+<h3>7.4 Çıkış (düşüm)</h3>
+<ol>
+  <li><b>🚪 Çıkış bekleyen</b> kartına basın. KBS ad ve kimlik numarasını gizli gösterir (ör. "ES** AK**"); misafiri <b>oda numarasından</b> tanıyın.</li>
+  <li>Satırdaki <span class="ui">Çıkar</span> → onay penceresinde ad ve odayı kontrol edip onaylayın.</li>
+  <li>Hepsi doğruysa <span class="ui">Hepsini çıkar</span> kullanılabilir.</li>
+</ol>
+<div class="note">OPERA ile KBS arasındaki fark çok büyükse (ör. OPERA listesi eksik geldiyse) <span class="ui">Hepsini çıkar</span> güvenlik için kapanır; o durumda listeyi kontrol edip tek tek çıkarın.</div>
+
+<h3>7.5 Oda değişikliği</h3>
+<p>Misafirin OPERA'daki odası KBS'deki odasından farklıysa <b>"🔁 Oda değişti"</b> bölümü çıkar.</p>
+<ul>
+  <li>KBS'ye girişin üzerinden <b>3 saat</b> geçmediyse <span class="ui">Odayı güncelle</span>.</li>
+  <li>3 saat geçtiyse KBS oda güncellemesine izin vermez; <span class="ui">Çıkış + yeniden giriş</span> önce eski odadan çıkış, sonra yeni odayla giriş yapar.</li>
+</ul>
+
+<h3>7.6 Hata alan kayıtlar</h3>
+<p><b>! Hata</b> kartında her misafirin son hatalı işlemi ve KBS'nin mesajı görünür. Sorunu giderin (ör. eksik bilgiyi tamamlayın) ve <span class="ui">Tekrar gönder</span>'e basın. Uygulama hata veren işlemi (giriş / oda / çıkış) yeniden dener.</p>
+
+<h3>7.7 KBS Geçmişi (rapor)</h3>
+<p><b>KBS Geçmişi</b> düğmesini yalnızca <b>KBS geçmişini görebilir</b> yetkisi olan kullanıcılar görür ve yalnızca bilgisayar / tablet ekranında açılır (telefonda gösterilmez).</p>
+<ul>
+  <li>Uygulamadan KBS'ye yapılan <b>her giriş, çıkış ve oda değişimi</b> kayıt altındadır: tarih ve saat, misafirin adı, kimlik / pasaport no, oda, işlemi yapan kullanıcı, sonuç (başarılı / hata) ve <b>KBS'nin verdiği yanıt</b>. "KBS'de kayıtlı say" ile elle işaretlenenler de "KBS'ye gönderilmedi" notuyla görünür.</li>
+  <li><b>Arama:</b> ad soyad, kimlik / pasaport no, oda veya profil no yazıp tarih aralığını seçin, <span class="ui">Ara</span>. Bir misafirin tüm işlemleri sırasıyla listelenir.</li>
+  <li><span class="ui">🖨 Yazdır / PDF</span>: yalnızca raporu (otel adı, tarih aralığı, raporu alan kişi ve saat dahil) yazdırır; "PDF olarak kaydet" ile dosya alınır.</li>
+  <li>Kayıtlar yönetim panelinde belirlenen süre (varsayılan <b>36 ay</b>) saklanır, sonra silinir. Kimse kayıtları silemez ya da değiştiremez.</li>
+  <li>Raporun her görüntülenmesi <b>Değişiklikler</b>'e kaydedilir (kim, ne zaman, hangi tarih aralığı; aranan metin yazılmaz).</li>
+  <li>Eski KBS uygulamasının girdiği misafirler bu raporda yoktur; bunların kaydı yalnızca KBS'nin kendi sisteminde bulunur.</li>
+</ul>
+
+<h3>7.8 KBS uyarısı: liste okunamadı</h3>
+<p>Turuncu <b>"KBS listesi okunamadı"</b> uyarısı çıkarsa durumlar yalnız uygulamanın kendi kayıtlarına göre gösterilir ve eksik olabilir; bu sırada toplu gönderim kapalıdır. <span class="ui">Yenile</span>'ye basın, sürerse KBS'ye yeniden bağlanın.</p>
+
+<h2 id="yonetici">Otel yöneticisi ekranı</h2>
+<p>Otel yöneticisi yetkisini <b>yalnız Protel</b> verir. Yetkiliyseniz üst çubukta <span class="ui">🛠 Otel yönetimi</span> görünür. Otelinizde iki adımlı doğrulama açıksa her oturumda e-posta kodu ya da Authenticator kodu sorulur; kapalıysa sorulmaz. Açılan ekranda otelinizin kullanıcılarını ekler, yetkilerini değiştirir, pasife alır; otelin iki adımlı doğrulama ve KBS ayarlarını yönetir; OHIP sayacını, uyarıları ve değişiklik kaydını görürsünüz. Ayarlar ve diğer oteller yalnız Protel yöneticisindedir.</p>
+
+<h2 id="sorun">8. Sık karşılaşılan durumlar</h2>
+<div class="tw"><table>
+  <tr><th>Durum</th><th>Çözüm</th></tr>
+  <tr><td>Kamera açılmıyor</td><td>Adresin https:// ile başladığından ve tarayıcıda kamera izni verildiğinden emin olun. Telefonda başka bir uygulama kamerayı kullanıyorsa kapatın.</td></tr>
+  <tr><td>MRZ okunmuyor</td><td>Belgeyi düz tutun, yansımayı önleyin, <span class="ui">Net Kare Al</span> deneyin; olmazsa manuel girin.</td></tr>
+  <tr><td>Zilde kırmızı sayı</td><td>Zile basıp uyarıyı okuyun. OPERA / KBS bağlantı sorunudur; düzelince kendiliğinden kapanır. Sürerse yöneticinize bildirin.</td></tr>
+  <tr><td>"Hesap kilitlendi"</td><td>15 dakika bekleyin ya da <span class="ui">Parolamı unuttum</span> kullanın.</td></tr>
+  <tr><td>KBS "oturumu sona erdi"</td><td>KBS Bilgileri'nden yeniden bağlanın. Aynı KBS kullanıcısıyla başka bir yerde oturum açık olmamalı.</td></tr>
+  <tr><td>Misafir hem Bekleyen'de hem Çıkış bekleyen'de (aynı oda)</td><td>Ad ya da belge no OPERA'da KBS'dekinden farklı yazılmış olabilir. OPERA'daki bilgiyi düzeltin; bir sonraki yenilemede eşleşir.</td></tr>
+</table></div>
+
+<p class="foot">SnapPass · protel · Bu rehber uygulamanın içinden açılır: üst çubuktaki ❔ Yardım. PDF almak için 🖨 Yazdır / PDF → "PDF olarak kaydet".</p>
+</main>
+</body>
+</html>
