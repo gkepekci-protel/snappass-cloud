@@ -15,7 +15,7 @@
 </div>
 <main>
 <h1>SnapPass Yönetici Kurulum Rehberi</h1>
-<p class="sub">Protel yöneticileri için: sistem ayarları, Enterprise (OHIP) tanımı, otel ekleme, kullanıcılar ve KBS'ye geçiş.</p>
+<p class="sub">Protel yöneticileri için: sistem ayarları, Enterprise (OHIP) tanımı, otel ekleme, kullanıcılar ve yönetim.</p>
 
 <div class="toc no-print"><b>İçindekiler</b>
 <ol>
@@ -25,7 +25,6 @@
   <li><a href="#enterprise">Enterprise ve otel ekleme</a></li>
   <li><a href="#otel">Otel sayfası</a></li>
   <li><a href="#kullanici">Otel kullanıcıları</a></li>
-  <li><a href="#kbs">KBS kurulumu ve eski uygulamadan geçiş</a></li>
   <li><a href="#izleme">İzleme: OHIP sayacı ve uyarılar</a></li>
   <li><a href="#yonetici">Protel Yöneticileri</a></li>
   <li><a href="#sunucu">Sunucu notları (teknik)</a></li>
@@ -40,7 +39,6 @@
   <tr><td>Ortam: Customer ya da Partner</td><td>OHIP sözleşmesi. Customer bedelsizdir; Partner'da 30.000 çağrı ≈ 10 USD/ay.</td></tr>
   <tr><td>HotelId</td><td>OPERA'daki otel kodu (ör. AKV).</td></tr>
   <tr><td>Kullanıcı listesi</td><td>Ad soyad, kullanıcı adı, e-posta.</td></tr>
-  <tr><td>KBS türü ve bilgileri</td><td>Polis (Emniyet): otelin KBS kullanıcı adı, TC, parola, EGMSEC. Jandarma: kullanıcı TC kimlik no, tesis kodu ve şifre (Jandarma KBS web servisi; oturum ve EGMSEC yoktur).</td></tr>
 </table></div>
 <div class="note">Uygulama telefon kamerası kullandığı için kullanıcılar uygulamaya mutlaka <b>https://</b> adresinden girmelidir.</div>
 
@@ -81,7 +79,6 @@
 <p>Enterprise adına tıklayınca açılır:</p>
 <ul>
   <li><b>OHIP tanımları</b>: bilgileri güncelleyin; <span class="ui">Kaydet ve OHIP TEST</span> ile bağlantıyı doğrulayın.</li>
-  <li><b>Ortam</b> KBS ekranının otomatik yenilenme sıklığını da belirler: Customer 60 sn, Partner 120 sn.</li>
   <li><span class="ui">OPERA'daki otelleri listele</span> → <span class="ui">Ekle</span> ile aynı Enterprise'daki diğer otelleri hızlıca ekleyebilirsiniz.</li>
   <li>Otel <span class="ui">Pasife al</span> / <span class="ui">Aktife al</span>; içinde otel kalmayan Enterprise silinebilir.</li>
 </ul>
@@ -104,83 +101,33 @@
   <li>Otel adı eklenirken OPERA'dan alınır. Enterprise'a bağlı olmayan otel için <span class="ui">Enterprise'a bağla</span>.</li>
   <li><b>Otel ayarları</b> (kullanıcılar tablosunun altında): her ayarın yanındaki <span class="ui">AÇIK</span> / <span class="ui">KAPALI</span> düğmesine basınca onay sorulur ve durum değişir.</li>
   <li><b>İki adımlı doğrulama</b>: <span class="ui">AÇIK</span> / <span class="ui">KAPALI</span>. Açıkken bu otelin kullanıcıları paroladan sonra e-postayla gelen 6 haneli kodu da girer (SMTP gerekli). Listede otelin yanında <b>2FA</b> etiketi görünür.</li>
-  <li><b>KBS bildirimi</b>: <span class="ui">AÇIK</span> / <span class="ui">KAPALI</span>. Açıkken uygulamada KBS sekmesi görünür. Kapatmak hiçbir bilgiyi silmez (KBS bilgileri, kayıtlar, tip korunur); yeniden açıldığında kaldığı yerden devam eder.</li>
-  <li><b>KBS tipi</b>: Polis (Emniyet) ya da Jandarma (API) → <span class="ui">Kaydet</span>. Değiştirirken onay sorulur; kullanıcıların kayıtlı Polis KBS bilgileri <b>silinmez</b>, pasif saklanır ve Polis'e dönünce yeniden kullanılır. KBS tipini <b>yalnız Protel yöneticisi</b> belirler ve değiştirir; otel kullanıcıları uygulamada yalnız seçili tipin ekranını görür (Polis seçiliyse Polis bilgileri, Jandarma seçiliyse Jandarma bilgileri). Jandarma'ya geçilince otelin açık Polis KBS bağlantısı kapanır.</li>
-  <li><span class="ui">Pasife al</span> / <span class="ui">Oteli sil</span>. Otelde herhangi bir kullanıcı hareketi varsa (giriş yapılmış, OPERA / KBS işlemi, OHIP çağrısı) otel <b>silinemez</b>; düğme kapalı görünür. Bu durumda pasife alın.</li>
+  <li><span class="ui">Pasife al</span> / <span class="ui">Oteli sil</span>. Otelde herhangi bir kullanıcı hareketi varsa (giriş yapılmış, OPERA işlemi, OHIP çağrısı) otel <b>silinemez</b>; düğme kapalı görünür. Bu durumda pasife alın.</li>
 </ul>
 
 <h2 id="kullanici">6. Otel kullanıcıları</h2>
 <ol>
   <li>Otel sayfasında <span class="ui">➕ Kullanıcı oluştur</span>'a basın; <span class="ui">Kullanıcı adı</span>, <span class="ui">Ad soyad</span> ve <span class="ui">E-posta</span>yı girin. Üç alan dolunca <span class="ui">Oluştur ve davetiye gönder</span> etkinleşir.</li>
-  <li>Her kullanıcı listede tek satır görünür (ad, e-posta, durum). <span class="ui">Düzenle</span>'ye basınca tek satırda <b>E-posta · 2FA · KBS</b> alanları ve <span class="ui">Kaydet</span> açılır; altında kısa düğmeler: <span class="ui">Sıfırla</span> (parola sıfırlama / davetiye bağlantısı), <span class="ui">Pasif</span> / <span class="ui">Aktif</span>, <span class="ui">Sil</span> (Authenticator kuruluysa ayrıca <span class="ui">Auth sıfırla</span>).</li>
+  <li>Her kullanıcı listede tek satır görünür (ad, e-posta, durum). <span class="ui">Düzenle</span>'ye basınca tek satırda <b>E-posta · 2FA</b> alanları ve <span class="ui">Kaydet</span> açılır; altında kısa düğmeler: <span class="ui">Sıfırla</span> (parola sıfırlama / davetiye bağlantısı), <span class="ui">Pasif</span> / <span class="ui">Aktif</span>, <span class="ui">Sil</span> (Authenticator kuruluysa ayrıca <span class="ui">Auth sıfırla</span>).</li>
   <li>Kullanıcı e-postadaki bağlantıyla (7 gün geçerli) kendi parolasını belirler. Listede o zamana kadar <b>davetiye bekliyor</b> yazar.</li>
 </ol>
 <ul>
   <li>Bağlantı kaybolduysa / süresi dolduysa: <span class="ui">Davetiyeyi yeniden gönder</span>; parolasını unutan kullanıcı için <span class="ui">Parola sıfırlama bağlantısı gönder</span> (eski bağlantı geçersiz olur).</li>
-  <li><b>KBS yetkileri</b> (KBS açık otelde, kullanıcının <span class="ui">Düzenle</span> satırında iki ayrı kutu): <i>KBS giriş bilgilerini düzenleyebilir</i> (kullanıcı adı, parola, TC kimlik no) ve <i>KBS geçmişini görebilir</i> (uygulamada KBS Geçmişi raporu; yalnız bilgisayar / tablet). KBS sekmesini ve bağlanmayı herkes kullanır.</li>
+  <li><b>Otel yöneticisi</b> (yalnız Protel yöneticisi verir; kullanıcının <span class="ui">Düzenle</span> satırında <b>Otel yöneticisi</b> kutusu). Bu kullanıcı uygulamanın üst çubuğunda <span class="ui">🛠 Otel yönetimi</span> düğmesini görür. Otelde <b>iki adımlı doğrulama açıksa</b> düğmeye basınca <b>her oturumda</b> ikinci doğrulama istenir: Authenticator kuruluysa uygulamadaki kod, değilse e-postasına gelen 6 haneli kod; doğrulama 30 dakika (kullandıkça uzar) geçerlidir. Otelde iki adımlı doğrulama <b>kapalıysa</b> otel yöneticisi ekranı için de ek doğrulama sorulmaz (giriş kuralı otelle aynıdır). Yalnız <b>kendi otelinin</b> sayfasını görür: <b>kullanıcı oluşturma, davetiye, yetkileri değiştirme, pasife alma / silme, 2FA yöntemi, Authenticator sıfırlama</b>, otelin <b>iki adımlı doğrulama</b> ayarı; ayrıca kendi otelinin <b>OHIP çağrı sayacı</b>, <b>uyarıları</b> ve <b>değişiklik kaydı</b> (Protel yönetimindeki gibi üst sekmelerde: Otel · OHIP Çağrı Sayacı · Uyarılar · Değişiklikler). OHIP tanımını yalnız görür (gizli anahtarlar hiç gönderilmez). <b>Göremez / yapamaz:</b> Ayarlar (e-posta, dil, yöneticiler), Enterprise ve OHIP tanımı yazma, otel ekleme / silme / pasife alma, diğer oteller, <b>otel yöneticisi yetkisini verme, alma ve görme</b> (kutu ve etiket ona gösterilmez). Otel yöneticisi kendi hesabı dahil tüm otel kullanıcılarının e-posta, yetki ve 2FA ayarlarını düzenleyebilir; kendi kendini pasife alamaz / silemez. Otel yöneticisi yetkisini yalnız Protel yöneticisi verir ve alır.</li>
+  <li><b>Profil işlemleri yetkileri</b> (varsayılan <b>kapalı</b>, yalnız Protel yöneticisi verir; kullanıcının <span class="ui">Düzenle</span> satırında üç kutu): <b>Profilleri birleştirebilir</b>, <b>Rezervasyonun ana profilini değiştirebilir</b>, <b>Beraberindeki profilini değiştirebilir</b>. Yetkili kullanıcı, aynı kimlik / ad-soyad ile eşleşen profil uyarısında ilgili düğmeleri görür. Birleştirmede <b>kalacak profil</b> seçilir (varsayılan: listedeki profil kalır, rezervasyondaki birleşir); iki aşamalı onay ister ve OPERA'da geri alınamaz. Profil değiştirme yalnız misafir profilini değiştirir; yetişkin / çocuk sayısı, oda ve fiyat değişmez. Tüm işlemler işlem kaydına yazılır.</li>
   <li><b>Giriş doğrulaması</b>: otelde iki adımlı doğrulama <b>KAPALI</b> ise herkes yalnız parolayla girer ve bu ayar pasif görünür. <b>AÇIK</b> ise her kullanıcı için <i>E-posta kodu</i> (varsayılan) ya da <i>Google Authenticator</i> seçilir.</li>
   <li>5 hatalı denemede hesap 15 dk <b>kilitli</b> olur; beklemek ya da "Parolamı unuttum" yeterlidir.</li>
   <li>Ayrılan personeli <span class="ui">Pasifleştir</span> ya da <span class="ui">Sil</span>.</li>
 </ul>
 <p>Kullanıcılara <b>Kullanıcı Rehberi</b>'ni iletin: uygulamada üst çubuktaki ❔ Yardım (yazdırılabilir / PDF).</p>
 
-<h2 id="kbs">7. KBS kurulumu ve eski uygulamadan geçiş</h2>
-<div class="warn"><b>KBS canlı Emniyet sistemidir.</b> Test misafirlerini KBS'ye göndermeyin. Uygulama KBS'ye hiçbir şeyi kendiliğinden göndermez; her gönderim kullanıcının onayıyla yapılır.</div>
-<h3>7.1 Açma</h3>
-<ol>
-  <li>Otel sayfasında <span class="ui">KBS'yi aç</span>, KBS tipini <b>Polis (Emniyet)</b> seçin.</li>
-  <li><b>Otel yöneticisi</b> (yalnız Protel yöneticisi verir; kullanıcının <span class="ui">Düzenle</span> satırında <b>Otel yöneticisi</b> kutusu). Bu kullanıcı uygulamanın üst çubuğunda <span class="ui">🛠 Otel yönetimi</span> düğmesini görür. Otelde <b>iki adımlı doğrulama açıksa</b> düğmeye basınca <b>her oturumda</b> ikinci doğrulama istenir: Authenticator kuruluysa uygulamadaki kod, değilse e-postasına gelen 6 haneli kod; doğrulama 30 dakika (kullandıkça uzar) geçerlidir. Otelde iki adımlı doğrulama <b>kapalıysa</b> otel yöneticisi ekranı için de ek doğrulama sorulmaz (giriş kuralı otelle aynıdır). Yalnız <b>kendi otelinin</b> sayfasını görür: <b>kullanıcı oluşturma, davetiye, yetkileri değiştirme, pasife alma / silme, 2FA yöntemi, Authenticator sıfırlama</b>, otelin <b>iki adımlı doğrulama</b> ve <b>KBS otomatik gönderim</b> ayarları; ayrıca kendi otelinin <b>OHIP çağrı sayacı</b>, <b>uyarıları</b> ve <b>değişiklik kaydı</b> (Protel yönetimindeki gibi üst sekmelerde: Otel · OHIP Çağrı Sayacı · Uyarılar · Değişiklikler). OHIP tanımını yalnız görür (gizli anahtarlar hiç gönderilmez); KBS bildirimini açıp kapatma, KBS tipi ve KBS bağlantısını durdurma Protel'dedir. <b>Göremez / yapamaz:</b> Ayarlar (e-posta, dil, saklama süresi, yöneticiler), Enterprise ve OHIP tanımı yazma, otel ekleme / silme / pasife alma, diğer oteller, <b>otel yöneticisi yetkisini verme, alma ve görme</b> (kutu ve etiket ona gösterilmez). Otel yöneticisi kendi hesabı dahil tüm otel kullanıcılarının e-posta, yetki ve 2FA ayarlarını düzenleyebilir; kendi kendini pasife alamaz / silemez. Otel yöneticisi yetkisini yalnız Protel yöneticisi verir ve alır.</li>
-  <li><b>Profil işlemleri yetkileri</b> (varsayılan <b>kapalı</b>, yalnız Protel yöneticisi verir; kullanıcının <span class="ui">Düzenle</span> satırında üç kutu): <b>Profilleri birleştirebilir</b>, <b>Rezervasyonun ana profilini değiştirebilir</b>, <b>Beraberindeki profilini değiştirebilir</b>. Yetkili kullanıcı, aynı kimlik / ad-soyad ile eşleşen profil uyarısında ilgili düğmeleri görür. Birleştirmede <b>kalacak profil</b> seçilir (varsayılan: listedeki profil kalır, rezervasyondaki birleşir); iki aşamalı onay ister ve OPERA'da geri alınamaz. Profil değiştirme yalnız misafir profilini değiştirir; yetişkin / çocuk sayısı, oda ve fiyat değişmez. Tüm işlemler işlem kaydına yazılır.</li>
-  <li><b>Otelin ilk kullanıcısı KBS bilgileri yetkisiyle açılır</b> (kendiliğinden); sonraki kullanıcılar yetkisiz açılır. Otel sayfasında, KBS bilgilerini girecek kullanıcıya <b>KBS bilgileri yetkisi</b> verin ya da değiştirin (kullanıcının <span class="ui">Düzenle</span> satırında <b>KBS</b> kutusunu işaretleyip <span class="ui">Kaydet</span>). Bu kullanıcı uygulamada <span class="ui">🛡 KBS</span> → <span class="ui">⚙️ KBS Bilgileri</span>'ne otelin KBS kullanıcı adı, TC kimlik no ve parolasını <b>kendisi</b> girer. Bilgiler otel başınadır; diğer kullanıcılar bilgileri görmez, yalnız bağlanır. Bilgiler gizli görünür, <span class="ui">Düzenle</span> ile açılır; silme düğmesi yoktur.
-    <ul>
-      <li><b>EGMSEC gizli anahtarı</b> (isteğe bağlı): girilirse uygulama EGMSEC kodunu kendisi üretir ve oturum düştüğünde (boşta kalma, sunucu yeniden başlaması) KBS paneli açıldığında arka planda kendiliğinden yeniden bağlanır (en çok 5 dakikada bir deneme; art arda 2 başarısızlıkta durur, <span class="ui">KBS'ye bağlan</span> ile yeniden başlar); girilmezse her bağlanışta telefondaki kod yazılır. Doğruluğunu <span class="ui">Kodu önizle</span> ile telefondaki kodla karşılaştırarak kontrol edin.</li>
-      <li><b>EGMSEC anahtarını KBS'den oluşturma:</b> KBS bilgileri girilirken <span class="ui">Kalıcı EGMSEC anahtarı üret</span> kutusu işaretlenirse (ilk kurulumda ya da sonradan <span class="ui">Düzenle</span> ile) uygulama, KBS kılavuzundaki "Yeni Kayıt" adımlarını uygulama içinde yapar (giriş → Yeni Kayıt Sayfası: TC, ad, soyad → QR kodu → doğrulama kodu → "Kaydınız başarıyla tamamlanmıştır"). QR koddaki gizli anahtar sunucuda şifreli saklanır, ekranda gösterilmez. Ad ve soyad yalnız KBS kayıt formu içindir, saklanmaz. <b>Dikkat:</b> hesap daha önce kayıtlıysa <span class="ui">Kayıt Güncelle</span> gerekir ve bu, hesabın <b>mevcut anahtarını geçersiz kılar</b> (telefondaki EGMSEC ve aynı hesabı kullanan başka programlar çalışmaz). Canlı KBS'de çalışır: açık KBS oturumu düşer, başarısız denemeler hesabı kilitleyebileceği için denemeler arasında en az 10 dakika beklenir. Önce yeni (hiç kaydı olmayan) bir hesapta deneyin. Anahtar bir kez üretildikten sonra yeniden üretmek için ek uyarı ve onay istenir; kutu işaretlenmezse telefondaki EGMSEC ile giriş eskisi gibi sürer.</li>
-      <li><b>KBS bağlantısı (Çalışıyor / Durduruldu):</b> otel sayfasında (yalnız Protel yöneticisi). <b>Durduruldu</b> iken bu otel için KBS'ye (Polis ya da Jandarma) hiçbir istek gitmez: bağlanma, liste okuma, gönderim ve otomatik yeniden bağlanma durur, açık oturum kapanır; bilgiler silinmez. Kullanıcılar yeniden başlatamaz, yalnız Protel yöneticisi başlatır. Oteli eski programdan SnapPass'a geçirmeden önce eski program KBS'yi kullanırken SnapPass'ın araya girmemesi için kullanın. Kayıtlı Oteller tablosunun <b>KBS</b> sütununda <b>Durduruldu</b> olarak görünür.</li>
-      <li><b>KBS otomatik gönderim</b> (otel sayfasında <span class="ui">KBS tipi</span>'nin altında, <b>varsayılan KAPALI</b>): Açıkken <span class="ui">KBS Gönderim</span> ekranı açık olan kullanıcının ekranında bilgisi tam misafirlerin giriş, çıkış ve oda değişimi kendiliğinden KBS'ye gönderilir. Korumalar: ekran kapalıyken gönderim yapılmaz; belirsiz eşleşmeler (öneri kutusu) atlanır; tur başına en çok 10 kayıt (sunucu da bunu zorlar, turlar arası en az 15 sn); aynı kayıt 15 dakika içinde yeniden denenmez; bir kayıt hata verirse otomatik gönderim durur, <span class="ui">Yenile</span> ile devam eder; toplu çıkış yalnız OPERA-KBS farkı küçükse; oda değişimi yalnız KBS'nin 3 saatlik süresi içindeyse. Canlı yasal bildirimdir: açmadan önce bilgilerin doğruluğunu elle gönderimle deneyin. Sonuçlar KBS Geçmişi ve işlem kaydında "OTOMATİK" olarak görünür. Sunucuda sürekli çalışan bir otomatik gönderim henüz yoktur (ekran açık olmalı).</li>
-      <li><b>Tek kullanımlık parola:</b> anahtarı kayıtlı otelde KBS Bilgileri ekranındaki <span class="ui">Kodu göster</span>, kayıtlı anahtardan o anki EGMSEC kodunu gösterir (KBS'ye siteden elle girmesi gereken yetkili için). Kod 30 saniyede bir kendiliğinden yenilenir, <span class="ui">Yenile</span> ve <span class="ui">Kopyala</span> düğmeleri vardır, 2 dakika sonra gizlenir; ilk gösterim işlem kaydına yazılır. Anahtarı henüz SnapPass'a taşınmamış (hâlâ PMS'in kullandığı) otelde kodu PMS'in tek kullanımlık parola ekranından alıp SnapPass'ta bağlanırken yazabilirsiniz.</li>
-      <li>Yabancı misafirlerde doğum yeri genelde boşsa "uyruğu doğum yeri olarak gönder" seçeneği işaretlenebilir.</li>
-    </ul>
-  </li>
-  <li><span class="ui">KBS'ye bağlan</span> → EGMSEC kodu → <b>Bağlandı</b>.</li>
-</ol>
-<h3>7.2 İlk kontrol</h3>
-<p><span class="ui">📤 KBS Gönderim</span> açılınca uygulama KBS'deki aktif konaklayan listesini okur ve OPERA ile eşleştirir (ad, soyad, kimlik / pasaport no; Türkçe harf farkları eşit sayılır). <b>İşaretleme yapmaya gerek yoktur</b>: eski sistemin girdiği misafirler de doğrudan "KBS'de kayıtlı" görünür.</p>
-<div class="tw"><table>
-  <tr><th>Beklenen</th><th>Değilse</th></tr>
-  <tr><td><b>KBS'de kayıtlı</b> ≈ OPERA'daki konaklayan sayısı</td><td>Göndermeden önce inceleyin.</td></tr>
-  <tr><td><b>Bekleyen</b>: yalnız gerçekten KBS'ye girilmemiş misafirler (az sayıda)</td><td>Kalabalıksa isim / belge no yazım farkı olabilir; toplu göndermeyin.</td></tr>
-  <tr><td><b>Çıkış bekleyen</b>: yalnız check-out olmuş misafirler</td><td>Aynı odada hem Bekleyen hem Çıkış bekleyen varsa büyük ihtimalle aynı kişidir: OPERA'daki adı / belge no'yu düzeltin.</td></tr>
-</table></div>
-<div class="note">Fark çok büyükse "Hepsini çıkar" güvenlik için kendiliğinden kapanır. KBS listesi eksik okunursa liste kullanılmaz, turuncu uyarı çıkar ve toplu gönderim kapanır.</div>
-<h3>7.3 Eski KBS uygulamasından geçiş</h3>
-<ul>
-  <li>Aynı KBS kullanıcısıyla iki program aynı anda oturum açamaz; biri diğerini düşürür. Geçiş gününde eski uygulamayı <b>durdurun</b> ya da SnapPass için ayrı bir KBS kullanıcısı kullanın (Emniyet'in ayrı kullanıcı verip vermediğini otelin KBS sorumlusuna sorun).</li>
-  <li>Eski uygulama otomatik gönderim yapıyorsa, SnapPass'ta gönderim <b>kullanıcı onaylı</b>dır: resepsiyon ekibinin gün içinde KBS ekranını kontrol etmesi gerektiğini anlatın.</li>
-  <li>Eski uygulamada EGMSEC anahtarı kayıtlıysa, aynı anahtarı KBS Bilgileri'ne girmek bağlanmayı kolaylaştırır.</li>
-</ul>
-<h3>7.4 Kurallar</h3>
-<ul>
-  <li>Oda güncellemesi KBS'de giriş saatinden itibaren <b>3 saat</b> içinde yapılabilir; sonrası için uygulama "Çıkış + yeniden giriş" önerir.</li>
-  <li>KBS'ye art arda hatalı giriş hesabı kilitleyebilir; uygulama denemeler arasında bekletir.</li>
-  <li>Sunucu yeniden başlatılınca açık KBS oturumları kapanır; kullanıcı yeniden bağlanır.</li>
-  <li>Jandarma (API): KBS Bilgileri'nde kullanıcı TC kimlik no, tesis kodu ve şifre girilir; <span class="ui">Bağlantıyı dene</span> bilgileri bir okuma çağrısıyla doğrular. Giriş, oda değişimi ve çıkış Jandarma web servisine doğrudan gönderilir. <b>Not:</b> Jandarma gönderimi gerçek servise karşı henüz canlıda denenmemiştir; ilk gönderimi tek bir misafirle deneyin.</li>
-</ul>
-
-<h3>7.5 Gönderim kayıtları ve saklama süresi</h3>
-<ul>
-  <li>Uygulamadan KBS'ye yapılan her giriş / çıkış / oda değişimi, misafir adı, kimlik / pasaport no, işlemi yapan, sonuç ve <b>KBS yanıtı</b> ile otel kayıtlarına yazılır. Kullanıcılar bu kayıtları silemez; KBS geçmişi yetkisi olan kullanıcı uygulamada rapor alır (bkz. Kullanıcı Rehberi 7.7).</li>
-  <li>Kayıtlar <span class="ui">⚙️ Ayarlar</span> → <b>Kayıt Saklama Süresi</b> kadar (varsayılan <b>36 ay</b>, 12–240) saklanır; süre dolunca günde bir kontrolde <b>kalıcı olarak silinir</b>. Süreyi otelin hukuk / KVKK sorumlusuyla belirleyin; resmî talep (örn. denetimde bir misafirin bildirimi) ihtimaline karşı süreyi kısa tutmayın.</li>
-  <li>Eski KBS uygulamasının girdikleri bu kayıtlarda bulunmaz.</li>
-</ul>
-
-<h2 id="izleme">8. İzleme: OHIP sayacı ve uyarılar</h2>
+<h2 id="izleme">7. İzleme: OHIP sayacı ve uyarılar</h2>
 <ul>
   <li><span class="ui">📊 OHIP Çağrı Sayacı</span>: otel bazında bugün ve seçili tarih aralığındaki çağrı sayısı; otele tıklayınca API türüne (profil / rezervasyon okuma-yazma) ve güne göre döküm açılır. Partner ortamda 30.000 kotasına göre yüzde gösterilir, %80'de kırmızıya döner.</li>
-  <li><span class="ui">🔔 Uyarılar</span>: son 7 günün OHIP / KBS hataları (yetki, kota, sunucu, erişim). Otel kullanıcıları da kendi otellerinin uyarılarını zilden görür. Bağlantı düzelince uyarı kendiliğinden "Çözüldü" olur.</li>
+  <li><span class="ui">🔔 Uyarılar</span>: son 7 günün OHIP hataları (yetki, kota, sunucu, erişim). Otel kullanıcıları da kendi otellerinin uyarılarını zilden görür. Bağlantı düzelince uyarı kendiliğinden "Çözüldü" olur.</li>
   <li><span class="ui">📜 Değişiklikler</span>: yönetim panelindeki işlemler (otel, Enterprise, kullanıcı ve ayar değişiklikleri, yönetici girişleri) tarih aralığı ve aramayla. Otel kullanıcılarının işlemleri uygulamadaki <b>📜 Değişiklikler</b> sekmesindedir (yönetici, <b>Kullanıcı arayüzü</b> ile oradan da bakabilir).</li>
 </ul>
 
-<h2 id="yonetici">9. Protel Yöneticileri</h2>
+<h2 id="yonetici">8. Protel Yöneticileri</h2>
 <p><span class="ui">⚙️ Ayarlar</span> → <b>Protel Yöneticileri</b> bölümü.</p>
 <ul>
   <li><span class="ui">Şirket Google hesabı (e-posta)</span> → <span class="ui">Yönetici ekle</span>. Kişi ilk girişte Authenticator kurar.</li>
@@ -188,18 +135,18 @@
   <li><span class="ui">Pasifleştir</span> / <span class="ui">Aktifleştir</span> / <span class="ui">Sil</span>.</li>
 </ul>
 
-<h2 id="sunucu">10. Sunucu notları (teknik)</h2>
+<h2 id="sunucu">9. Sunucu notları (teknik)</h2>
 <div class="tw"><table>
   <tr><th>Ayar</th><th>Açıklama</th></tr>
   <tr><td><code>SNAPPASS_DATABASE_URL</code></td><td>PostgreSQL bağlantısı.</td></tr>
-  <tr><td><code>SNAPPASS_DATA_DIR</code></td><td>Şifreleme anahtarının (<code>secret.key</code>) tutulduğu klasör. OHIP, SMTP ve KBS bilgileri bu anahtarla şifrelidir: <b>mutlaka yedekleyin</b>, kaybolursa bu bilgiler yeniden girilmelidir.</td></tr>
+  <tr><td><code>SNAPPASS_DATA_DIR</code></td><td>Şifreleme anahtarının (<code>secret.key</code>) tutulduğu klasör. OHIP ve SMTP bilgileri bu anahtarla şifrelidir: <b>mutlaka yedekleyin</b>, kaybolursa bu bilgiler yeniden girilmelidir.</td></tr>
   <tr><td><code>SNAPPASS_ADMIN_EMAIL</code></td><td>Hiç yönetici yokken ilk yöneticinin Google e-postası.</td></tr>
   <tr><td><code>SNAPPASS_GOOGLE_CLIENT_ID</code>, <code>SNAPPASS_GOOGLE_CLIENT_SECRET</code>, <code>SNAPPASS_GOOGLE_REDIRECT_URI</code>, <code>SSO_ALLOWED_DOMAINS</code></td><td>Protel yönetici girişi (Google). İzinli alan adı varsayılan protel.com.tr.</td></tr>
   <tr><td><code>SNAPPASS_APP_URL</code></td><td>Kurulum ekranında uygulama adresi girilmediyse kullanılan adres.</td></tr>
   <tr><td><code>SNAPPASS_HTTPS=1</code></td><td>Uygulama HTTPS arkasında çalışıyorsa (güvenli oturum çerezi).</td></tr>
 </table></div>
 
-<h2 id="liste">11. Yeni otel kontrol listesi</h2>
+<h2 id="liste">10. Yeni otel kontrol listesi</h2>
 <ul>
   <li>☐ Kurulum: SMTP + uygulama adresi kayıtlı, test e-postası geldi (ilk otelde bir kez).</li>
   <li>☐ Oracle tarafı: <b>Module Level Access Control</b> ve Client ID Environment'ında <b>Sensitive Data</b> açık.</li>
@@ -207,9 +154,6 @@
   <li>☐ Otel eklendi (HotelId doğru), otel adı OPERA'dan geldi; <b>Kullanıcı arayüzü</b> ile açılıyor.</li>
   <li>☐ Kullanıcılar oluşturuldu, davetiyeler gönderildi, en az bir kullanıcı giriş yaptı.</li>
   <li>☐ Bir kullanıcı telefonda https adresinden belge taradı ve OPERA'ya kaydetti.</li>
-  <li>☐ (KBS) KBS açıldı, tip seçildi, KBS sorumlusu bağlandı.</li>
-  <li>☐ (KBS) KBS'de kayıtlı ≈ konaklayan sayısı; Bekleyen ve Çıkış bekleyen mantıklı.</li>
-  <li>☐ (KBS) Eski KBS uygulaması durduruldu ya da ayrı KBS kullanıcısı ayarlandı.</li>
   <li>☐ Kullanıcı Rehberi otel ekibine iletildi.</li>
 </ul>
 

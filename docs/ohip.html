@@ -32,7 +32,7 @@
 <div class="tw"><table>
   <tr><th>SnapPass alanı</th><th>Oracle'da nereden alınır</th></tr>
   <tr><td>HostName</td><td>Developer Portal → <b>Environments</b> → ortamın <b>View Details</b> sayfasındaki <b>Gateway URL</b> değeri.</td></tr>
-  <tr><td>AppKey</td><td>Uygulama (ör. KBS) kaydedilince oluşur: Developer Portal → <b>Applications</b> → uygulama kartındaki <b>Application Key</b> (<i>Copy</i> ile kopyalanır).</td></tr>
+  <tr><td>AppKey</td><td>Uygulama kaydedilince oluşur: Developer Portal → <b>Applications</b> → uygulama kartındaki <b>Application Key</b> (<i>Copy</i> ile kopyalanır).</td></tr>
   <tr><td>CLIENT_ID / CLIENT_SECRET</td><td>Uygulamaya bağlı yeni oluşturulan Client ID ve parolası (aşağıda).</td></tr>
   <tr><td>EnterpriseId</td><td>OPERA Cloud Enterprise kimliği (ör. BHME, MAG).</td></tr>
   <tr><td>Scope</td><td>Genelde boş bırakılır (varsayılan kullanılır).</td></tr>
@@ -41,7 +41,7 @@
 <div class="warn"><b>Gizlilik:</b> AppKey, Client ID ve özellikle Client Secret gizli bilgidir. Ekran görüntüsü, e-posta ya da sohbetle paylaşmayın; yalnızca SnapPass yönetim panelindeki OHIP formuna yazın (şifreli saklanır).</div>
 
 <h2 id="app">1. Application (AppKey) oluşturma</h2>
-<p>SnapPass için (ör. KBS) ayrı bir uygulama kaydedilir; <b>AppKey</b> bu uygulamadan alınır.</p>
+<p>SnapPass için ayrı bir uygulama kaydedilir; <b>AppKey</b> bu uygulamadan alınır.</p>
 <ol>
   <li>Oracle Hospitality <b>Developer Portal</b>'a (Customer Portal üzerinden) girin → üst menüden <span class="ui">Applications</span> → <span class="ui">My Applications</span> sekmesi.</li>
   <li>Sağ üstteki <span class="ui">Register Application</span> düğmesine basın. Form birkaç adımdır; ilk adım <i>Application Details</i>'tir.</li>
@@ -49,11 +49,11 @@
 <h3>Adım 1 / 2 · Application Details</h3>
 <div class="tw"><table>
   <tr><th>Alan</th><th>Ne yazılır</th></tr>
-  <tr><td>Application Name <b>*</b></td><td>Uygulamanın adı. KBS için kullanılan örnek: <i>Kimlik Bildirim Sistemi</i>.</td></tr>
-  <tr><td>Description</td><td>İsteğe bağlı kısa açıklama. KBS için kullanılan örnek: <i>1774 Sayılı Kimlik Bildirme Kanunu kapsamında konaklayan misafirlerin ve çalışanların kimlik bilgilerini Emniyet Genel Müdürlüğü veya Jandarma Genel Komutanlığı'na elektronik ortamda anlık olarak bildirmesini sağlayan yasal bir sistemdir.</i></td></tr>
+  <tr><td>Application Name <b>*</b></td><td>Uygulamanın adı. Örnek: <i>SnapPass</i>.</td></tr>
+  <tr><td>Description</td><td>İsteğe bağlı kısa açıklama.</td></tr>
   <tr><td>Application Types</td><td>Listeden uygulama türü(leri) seçilir.</td></tr>
   <tr><td>Environment</td><td><b>Production</b> (canlı otel) ya da <b>Non Production</b> (test). Varsayılan Production gelir.</td></tr>
-  <tr><td>Business Justification <b>*</b></td><td>Uygulamanın neden oluşturulduğu: <b>en az 40, en çok 200 karakter</b>. KBS için kullanılan örnek: <i>Kimlik Bildirim Sistemi (KBS), 1774 Sayılı Kimlik Bildirme Kanunu</i>.</td></tr>
+  <tr><td>Business Justification <b>*</b></td><td>Uygulamanın neden oluşturulduğu: <b>en az 40, en çok 200 karakter</b>.</td></tr>
   <tr><td>Onay kutusu</td><td>Oracle'ın beyan metni: uygulama <i>Customer-Owned Internal Application</i> olmalı ve üçüncü taraf bağımsız yazılım firmalarının erişimine açılmamalıdır; aksi Oracle politikasına aykırıdır ve uygulamanın kapatılmasına ya da API çağrı ücretlerine yol açabilir. Metni okuyup otel adına yetkili kişi işaretler.</td></tr>
   <tr><td>Contact Details</td><td>Bu bilgiler uygulamayla ilgili bildirimlerde kullanılır; <b>canlı uygulamada büyük bir olay olursa Oracle bu adresle iletişime geçer ve yanıt gelmezse canlı uygulama devre dışı bırakılır</b>. Protel her kurulumda aynı izlenen e-Destek bilgisini kullanır:
     <div class="tw"><table>
@@ -86,7 +86,7 @@
 </ol>
 <h3>Adım 1 / 4 · Client Details</h3>
 <ul>
-  <li><b>Client Name \*</b>: istemcinin adı (ör. <i>KBS</i>). Sonra bu adla tanınır.</li>
+  <li><b>Client Name \*</b>: istemcinin adı (ör. <i>SnapPass</i>). Sonra bu adla tanınır.</li>
   <li><span class="ui">Next</span> ile Modules adımına geçilir.</li>
 </ul>
 <h3>Adım 2 / 4 · Modules</h3>
@@ -99,7 +99,6 @@
       <tr><td>Rezervasyon arama / okuma, beraberindeki ekleme</td><td><b>Reservation</b></td></tr>
       <tr><td>Misafir profili okuma / güncelleme, kimlik belgesi yazma</td><td><b>Customer Relationship Management</b> ve <b>API for Customer Management Service</b></td></tr>
       <tr><td>Zincir ve otel adı, zincirin otelleri</td><td><b>Enterprise Configuration</b></td></tr>
-      <tr><td>OPERA iş günü (business date)</td><td><b>Back Office Operations</b></td></tr>
     </table></div></li>
   <li><b>Kolay yol:</b> listenin başındaki <span class="ui">All Modules</span> kutusunu işaretlemek 40 modülün tümünü (tüm izinleriyle) seçer. <b>Dar yol:</b> yalnız yukarıdaki modülleri seçmek istemcinin yetkisini sınırlar; kimlik no gibi hassas veriye erişimi olan bir istemci için tercih edilir.</li>
   <li><span class="ui">Next</span> ile <b>Assigned Hotels</b> adımına geçin.</li>

@@ -1,4 +1,4 @@
-# SnapPass — OPERA Cloud Proxy
+# SnapPass Cloud — Belge Tarama + OPERA Cloud Proxy
 
 Belge (MRZ) tarama uygulaması ve OPERA Cloud (OHIP) proxy sunucusu. Kullanıcılar, oteller ve OHIP
 tanımları sunucuda (PostgreSQL) tutulur; giriş ve yönetim akışları TGA Veri Bildirim ile aynıdır.
@@ -7,24 +7,24 @@ tanımları sunucuda (PostgreSQL) tutulur; giriş ve yönetim akışları TGA Ve
 
 ### 1. Gereksinimler
 - Node.js 18+ (önerilen 24) → https://nodejs.org
-- PostgreSQL: `snappass` veritabanı ve `snappass_app` rolü
+- PostgreSQL: `snappass_cloud` veritabanı ve `snappass_app` rolü
 
 ```sql
 CREATE ROLE snappass_app LOGIN;
-CREATE DATABASE snappass OWNER snappass_app ENCODING 'UTF8';
+CREATE DATABASE snappass_cloud OWNER snappass_app ENCODING 'UTF8';
 ```
 Tablolar sunucu ilk açıldığında otomatik oluşturulur.
 
 ### 2. Kurulum
 ```bash
-cd snappass-proxy
+cd snappass-cloud
 npm install
 ```
 
 ### 3. Ortam değişkenleri
 | Değişken | Açıklama |
 |---|---|
-| `SNAPPASS_DATABASE_URL` | Varsayılan `postgresql://snappass_app@127.0.0.1:5432/snappass` |
+| `SNAPPASS_DATABASE_URL` | Varsayılan `postgresql://snappass_app@127.0.0.1:5432/snappass_cloud` |
 | `GOOGLE_CLIENT_ID`, `GOOGLE_CLIENT_SECRET` | Protel yönetici girişi (Google). `SNAPPASS_GOOGLE_*` verilirse onlar kullanılır |
 | `SNAPPASS_GOOGLE_REDIRECT_URI` | Varsayılan `<adres>/auth/google/callback`; Google Console'da yetkili yönlendirme adresi olarak eklenmeli |
 | `SSO_ALLOWED_DOMAINS` | Varsayılan `protel.com.tr` |
@@ -37,7 +37,7 @@ npm install
 
 ### 4. Çalıştır
 ```bash
-node server.js
+node server.js          # varsayılan port 3000 (PORT ile değişir); Google yönlendirme adresi localhost:3000 ve :8090 için kayıtlı
 ```
 ya da `start-snappass.bat`.
 
@@ -109,7 +109,7 @@ Tarayıcı  →  localhost:3000/api/opera/token  →  Oracle OPERA Cloud (client
 
 ## Dosya Yapısı
 ```
-snappass-proxy/
+snappass-cloud/
 ├── server.js          ← Proxy sunucu (OPERA API uçları)
 ├── lib/
 │   ├── web.js         ← Giriş, davetiye, 2FA, yönetim ekranları, /api/me, /api/opera/token

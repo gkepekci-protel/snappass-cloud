@@ -293,7 +293,7 @@ tr.usage-detail td { background: #fbfcfe; padding: 10px 12px 14px; }
 table.usage-days { width: 100%; font-size: 13px; }
 table.usage-days th { font-size: 11px; }
 
-/* Seçili KBS tipi düğmesi tıklanamaz ama soluk görünmez */
+/* Seçili (disabled) açık düğme tıklanamaz ama soluk görünmez */
 button.toggle.on:disabled { opacity: 1; cursor: default; }
 
 /* Otel kullanıcıları: tek satır özet, "Düzenle" ile açılan işlemler */
@@ -320,7 +320,7 @@ details.user-item[open] > summary { border-bottom: 1px solid var(--border); back
 @media (max-width: 640px) { .ui-line > label { min-width: 100%; } .ui-edit { margin-left: 0; } }
 .ui-line select { width: auto; flex: 0 1 260px; }
 .ui-line input[type=email] { width: auto; }
-/* AÇIK / KAPALI ve KBS tipi düğmeleri bir tık küçük */
+/* AÇIK / KAPALI düğmeleri bir tık küçük */
 button.toggle { min-width: 72px; padding: 4px 11px; font-size: 11.5px; letter-spacing: .04em; }
 
 /* Tek otelde OHIP tanımı otel ekranında (açılır bölüm) */
@@ -330,7 +330,7 @@ details.ohip-inline[open] > summary { border-bottom: 1px solid var(--border); ma
 .check-line { display: flex; gap: 8px; align-items: center; margin: 0 0 12px; font-weight: 400; cursor: pointer; }
 .check-line input { width: 18px; height: 18px; }
 
-/* Kullanıcı düzenleme: tek satır (E-posta · 2FA · KBS · Kaydet) + kısa işlem düğmeleri */
+/* Kullanıcı düzenleme: tek satır (E-posta · 2FA · Kaydet) + kısa işlem düğmeleri */
 .ui-row { display: flex; align-items: flex-end; gap: 10px 14px; flex-wrap: wrap; margin: 0; }
 .ui-f { display: flex; flex-direction: column; gap: 4px; font-size: 12px; font-weight: 700; color: var(--muted); margin: 0; }
 .ui-f input[type=email] { width: 260px; max-width: 100%; padding: 7px 10px; font-weight: 400; color: var(--text); }
@@ -339,7 +339,7 @@ details.ohip-inline[open] > summary { border-bottom: 1px solid var(--border); ma
 .ui-check { flex-direction: row; align-items: center; gap: 6px; padding-bottom: 8px; color: var(--text); cursor: pointer; }
 .ui-check input { width: 18px; height: 18px; }
 @media (max-width: 640px) { .ui-f input[type=email] { width: 100%; } .ui-f:first-of-type { flex: 1 1 100%; } }
-/* Kullanıcı satırı: ilk bakışta 2FA ve KBS; satıra (isme) basınca düzenleme açılır */
+/* Kullanıcı satırı: ilk bakışta 2FA ve yetkiler; satıra (isme) basınca düzenleme açılır */
 .ui-kv { font-size: 12.5px; padding: 2px 9px; border: 1px solid var(--border); border-radius: 999px; background: #f8fafd; white-space: nowrap; }
 .ui-tags { margin-left: auto; align-items: center; }
 .ui-info { font-size: 12.5px; }

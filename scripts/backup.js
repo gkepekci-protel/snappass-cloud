@@ -1,7 +1,7 @@
 /* Yedek: veritabanı (pg_dump) + data/ klasörü (secret.key ve sertifikalar) → backups/<tarih-saat>/
    Kullanım: node scripts/backup.js [hedef-klasör]
-   ÖNEMLİ: KBS/OHIP gizli bilgileri veritabanında data/secret.key ile şifreli saklanır. İkisini AYRI yerlerde saklayın
-   (örn. anahtar parola yöneticisinde, dump başka diskte); secret.key kaybolursa kayıtlı OHIP/KBS bilgileri okunamaz. */
+   ÖNEMLİ: OHIP/SMTP gizli bilgileri veritabanında data/secret.key ile şifreli saklanır. İkisini AYRI yerlerde saklayın
+   (örn. anahtar parola yöneticisinde, dump başka diskte); secret.key kaybolursa kayıtlı OHIP/SMTP bilgileri okunamaz. */
 const fs = require("fs");
 const path = require("path");
 const { spawnSync } = require("child_process");
@@ -17,7 +17,7 @@ fs.mkdirSync(dataOut, { recursive: true });
 for (const f of fs.readdirSync(path.join(root, "data"))) fs.copyFileSync(path.join(root, "data", f), path.join(dataOut, f));
 
 // veritabanı
-const url = process.env.SNAPPASS_DATABASE_URL || "postgresql://snappass_app@127.0.0.1:5432/snappass";
+const url = process.env.SNAPPASS_DATABASE_URL || "postgresql://snappass_app@127.0.0.1:5432/snappass_cloud";
 const candidates = ["pg_dump", ...["18", "17", "16", "15", "14"].map(v => `C:\\Program Files\\PostgreSQL\\${v}\\bin\\pg_dump.exe`)];
 let ok = false;
 for (const bin of candidates) {

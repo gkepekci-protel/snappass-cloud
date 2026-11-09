@@ -20,7 +20,7 @@ const db       = require("./lib/db");
 meter.install(); // global fetch kullanan modüller (jeton, web.js) için
 
 const app  = express();
-const PORT = 3000;
+const PORT = Number(process.env.PORT) || 3000;
 const DEBUG_DIR = path.join(__dirname, "temp");
 // Tarama hata ayıklama kayıtları (kimlik karesi, MRZ satırları, misafir adı) varsayılan olarak SAKLANMAZ.
 // Yalnız geliştirme/inceleme için SNAPPASS_MRZ_DEBUG=1 ile açılır.
@@ -163,7 +163,7 @@ app.get("/tessdata/:lang.traineddata.gz", async (req, res) => {
    GET /api/search?hostName=...&hotelId=...&appKey=...&token=...&byType=lastName|roomId|confirmationNo&query=...&tab=arrivals|inhouse
 ── */
 app.get("/api/search", async (req, res) => {
-  const { hostName, hotelId, appKey, byType, query, tab, all, depFrom, depTo } = req.query;
+  const { hostName, hotelId, appKey, byType, query, tab } = req.query;
   // Token'ı header'dan al (URL limit sorununu önler)
   const token = req.headers["x-opera-token"] || req.query.token;
 
@@ -171,20 +171,13 @@ app.get("/api/search", async (req, res) => {
     return res.status(400).json({ error: "Eksik parametre: " + JSON.stringify({hostName:!!hostName,hotelId:!!hotelId,appKey:!!appKey,token:!!token,query:!!query}) });
   }
   // Kimlik okuma ekranları yalnız aranan kaydı görür: boş, joker (%, *) ya da çok kısa soyad aramaları reddedilir.
-  // Tek istisna: KBS Gönderim listesi (all=1) ve yalnız KBS'si açık otelde.
   const rawQ = String(query || "");
   const hasWildcard = /[%*]/.test(rawQ);
   const bare = rawQ.replace(/[%*\s]/g, "");
   const tooBroad = !bare || hasWildcard || (byType === "lastName" && bare.length < 2);
-  if (tooBroad) {
-    const listAll = all === "1" && rawQ.trim() === "%" && byType === "lastName" && await web.kbsHotelOn(req).catch(() => false);
-    if (!listAll) return res.status(400).json({ error: "Arama ölçütü gerekli: soyad (en az 2 harf), oda no ya da rezervasyon no girin." });
-  }
+  if (tooBroad) return res.status(400).json({ error: "Arama ölçütü gerekli: soyad (en az 2 harf), oda no ya da rezervasyon no girin." });
 
-  const searchType = tab === "inhouse" ? "InHouse" : tab === "checkedout" ? "CheckedOut" : "Arrival";
-  // checkedout (KBS düşüm adayları): isteğe bağlı çıkış tarihi aralığı (YYYY-MM-DD)
-  const isoDay = (v) => (/^\d{4}-\d{2}-\d{2}$/.test(String(v || "")) ? String(v) : "");
-  const depRange = tab === "checkedout" && isoDay(depFrom) && isoDay(depTo) ? `&departureStartDate=${isoDay(depFrom)}&departureEndDate=${isoDay(depTo)}` : "";
+  const searchType = tab === "inhouse" ? "InHouse" : "Arrival";
   const rsvBase = `${hostName}/rsv/v1/hotels/${encodeURIComponent(hotelId)}/reservations`;
   // "%" = tümü listelensin (oda sırasıyla görüntülemek için sınır yüksek); aksi hâlde kısa liste
   const listLimit = query === "%" ? 100 : 20;
@@ -192,7 +185,7 @@ app.get("/api/search", async (req, res) => {
     ? `${rsvBase}?confirmationNumberList=${encodeURIComponent(query)}&fetchInstructions=Reservation`
     : byType === "roomId"
       ? `${rsvBase}?roomId=${encodeURIComponent(query)}&searchType=${searchType}&fetchInstructions=Reservation&limit=50&excludePseudoRoomReservations=true`
-      : `${rsvBase}?surname=${encodeURIComponent(query)}&searchType=${searchType}&=Reservation&fetchInstructions=Reservation&limit=${listLimit}${depRange}&excludePseudoRoomReservations=true`;
+      : `${rsvBase}?surname=${encodeURIComponent(query)}&searchType=${searchType}&=Reservation&fetchInstructions=Reservation&limit=${listLimit}&excludePseudoRoomReservations=true`;
 
   console.log(`[SEARCH] GET ${url}`);
   console.log(`[SEARCH] hotelId=${hotelId} byType=${byType} query="${query}" tab=${tab} tokenLen=${token?.length}`);
@@ -215,25 +208,6 @@ app.get("/api/search", async (req, res) => {
     if (upstream.status === 204) return res.status(204).end();
 
     let text = await upstream.text();
-    // all=1 (KBS listesi): tüm sayfalar birleştirilir (OPERA sayfa başına en çok ~100 kayıt döner)
-    if (all === "1" && query === "%" && byType === "lastName" && upstream.ok) {
-      try {
-        const first = JSON.parse(text);
-        let more = first?.reservations?.hasMore === true || first?.reservations?.hasMore === "true";
-        let offset = (first?.reservations?.reservationInfo ?? []).length;
-        for (let page = 0; more && page < 30; page++) {
-          const r2 = await fetch(`${url}&offset=${offset}`, { headers: { "Content-Type":"application/json", "x-hotelid":hotelId, "x-app-key":appKey, "Authorization":`Bearer ${token}` } });
-          if (!r2.ok) break;
-          const d2 = await r2.json();
-          const got = d2?.reservations?.reservationInfo ?? [];
-          if (!got.length) break;
-          first.reservations.reservationInfo.push(...got);
-          offset += got.length;
-          more = d2?.reservations?.hasMore === true || d2?.reservations?.hasMore === "true";
-        }
-        text = JSON.stringify(first);
-      } catch (e) { console.warn("[SEARCH] sayfalama hatası:", e.message); }
-    }
     // childAges debug — ilk rezervasyonun roomStay'ini logla
     try {
       const d = JSON.parse(text);
@@ -716,7 +690,7 @@ app.put("/api/profile", async (req, res) => {
 
 
 /* ─── Profil önbelleği ───────────────────────────────────────────────────
-   Bellekte, otel+profil bazında, 10 dk. Yalnız KBS için bilgileri tam profiller saklanır; eksik bilgili profil her seferinde
+   Bellekte, otel+profil bazında, 10 dk. Yalnız bilgileri tam profiller saklanır; eksik bilgili profil her seferinde
    OPERA'dan okunur (OPERA'da düzeltilince hemen görünsün). Profil yazılınca (düzenleme, kimlik güncelleme) ilgili kayıt silinir.
    fresh=1 ile atlanabilir. Kalıcı değildir; sunucu yeniden başlarsa boşalır. */
 const PROFILE_TTL_MS = 10 * 60 * 1000;

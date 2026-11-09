@@ -5,7 +5,7 @@ echo   SnapPass - Tek Tusla Baslat
 echo ============================================
 echo.
 
-cd /d "C:\PROJELER\snappass-proxy"
+cd /d "C:\PROJELER\snappass-cloud"
 
 if not exist "temp" mkdir "temp"
 
@@ -39,14 +39,15 @@ rem Yerel OCR araci (http://127.0.0.1:5102, ayri pencerede). Bulut OCR proxy ici
 echo [BILGI] Yerel OCR araci baslatiliyor: http://127.0.0.1:5102
 start "SnapPass OCR Araci" /min node ocr-agent.js
 
-echo [BILGI] Tarayici aciliyor: http://localhost:3000
-start "" http://localhost:3000
-echo [BILGI] MRZ debug log klasoru: C:\PROJELER\snappass-proxy\temp
+echo [BILGI] Tarayici aciliyor: http://localhost:3000/login
+start "" http://localhost:3000/login
+echo [BILGI] MRZ debug log klasoru: C:\PROJELER\snappass-cloud\temp
 
 echo [BILGI] SnapPass sunucusu baslatiliyor...
 echo Kapatmak icin Ctrl+C basin.
 echo.
 
+set PORT=3000
 call npm start
 
 if %errorlevel% neq 0 (
