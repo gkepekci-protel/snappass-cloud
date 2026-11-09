@@ -2964,12 +2964,24 @@ function Search({session,onSelect,onEdit,onAddAccompany,onLogout,onConfig,refres
   const [profileMap,setProfileMap]=useState({}); // profileId -> profile details
   // Kaydedip dönünce seçili profilin bilgilerini OPERA'dan yeniden okur (App çağırır)
   React.useEffect(()=>{
-    if(reloadProfileRef) reloadProfileRef.current=async(guestId)=>{
+    if(reloadProfileRef) reloadProfileRef.current=async(guestId,confNo)=>{
       if(!guestId) return;
-      const det=await getProfileDetails({hostName:session.hostName,hotelId:session.hotelId,appKey:session.appKey,token:session.token,profileId:guestId,firstName:"",lastName:""});
+      const base={hostName:session.hostName,hotelId:session.hotelId,appKey:session.appKey,token:session.token};
+      const det=await getProfileDetails({...base,profileId:guestId,firstName:"",lastName:"",fresh:true});
       if(det) setProfileMap(pm=>({...pm,[guestId]:det}));
+      // Kaydedilen misafirin rezervasyon satırları (ad, soyad, durum) da OPERA'dan tazelenir; aramaya yeniden basmak gerekmez. Listenin geri kalanı ve seçim korunur.
+      if(confNo){
+        try{
+          const norm=normalizeReservations(await operaSearch({...session,byType:"confirmationNo",query:confNo,tab}));
+          if(norm.length){
+            setResults(prev=>prev?[...prev.filter(r=>r.confirmationNo!==confNo),...norm]:prev);
+            setSelected(sel=>sel&&sel.confirmationNo===confNo?(norm.find(x=>String(x.guestId)===String(sel.guestId))||sel):sel);
+            norm.forEach(g=>{ if(g.guestId&&String(g.guestId)!==String(guestId)&&!String(g.guestId).startsWith("#")) getProfileDetails({...base,profileId:g.guestId,firstName:g.firstName,lastName:g.lastName,fresh:true}).then(d=>{ if(d) setProfileMap(pm=>({...pm,[g.guestId]:d})); }).catch(()=>{}); });
+          }
+        }catch(_){}
+      }
     };
-  },[session]);
+  },[session,tab]);
   // Sekme değişince arama türü (soyad / oda no) korunur
   const reset=nt=>{setResults(null);setQ("");setSelected(null);setApiErr("");setProfileMap({});if(nt){setTab(nt);}};
   const selectGuest=async(g)=>{
@@ -5611,7 +5623,7 @@ function DocForm({guest,scan,session,onSubmit,onBack,onLogout,manual}){
         title={t("Bu kimlik numarası başka bir profilde kayıtlı")}
         note={t("Girdiğiniz kimlik numarası sistemde aşağıdaki profilde zaten var. Rezervasyondaki profili değiştirmeden, yine de bu profile kaydetmek mi istiyorsunuz?")}
         canUse={false} forceLabel={t("Yine de bu profile kaydet")}
-        ctx={{session,profileId:guest.guestId,name:`${guest.firstName||""} ${guest.lastName||""}`.trim(),reservationId:guest.reservationId,isAccompany:!!guest.isAccompany,onChanged:()=>{setDup(null);onBack&&onBack();}}}
+        ctx={{session,profileId:guest.guestId,name:`${guest.firstName||""} ${guest.lastName||""}`.trim(),reservationId:guest.reservationId,isAccompany:!!guest.isAccompany,onChanged:()=>{setDup(null);onSubmit&&onSubmit();}}}
         onForce={()=>{setDup(null);submit(true);}} onCancel={()=>setDup(null)}/>}
       <TopBar session={session} onBack={onBack} onLogout={onLogout}/>
       <div className="page-wrap" style={{maxWidth:660,margin:"0 auto",padding:"22px 18px 50px"}}>
@@ -6044,9 +6056,11 @@ function App(){
     return ()=>{ stop=true; document.removeEventListener("visibilitychange",onVis); clearInterval(timer); };
   },[]);
   // Düzenle / Geri / Kaydet sonrası arama ekranına aynı sonuçlar ve seçili profille dönülür
-  const backToSearch=(reloadGuestId)=>{
+  // Kimlik tarama / düzenleme ekranından kaydetmeden dönüş: arama ekranı temiz açılır (kayıtta olduğu gibi)
+  const backToCleanSearch=()=>{ setScreen("search"); setTimeout(()=>{ searchRefreshRef.current && searchRefreshRef.current(); },100); };
+  const backToSearch=(reloadGuestId,confNo)=>{
     setScreen("search");
-    if(reloadGuestId) setTimeout(()=>{ reloadProfileRef.current && reloadProfileRef.current(reloadGuestId).catch(()=>{}); },400);
+    if(reloadGuestId) setTimeout(()=>{ reloadProfileRef.current && reloadProfileRef.current(reloadGuestId,confNo).catch(()=>{}); },400);
   };
 
   React.useEffect(()=>{
@@ -6122,8 +6136,10 @@ function App(){
       // Client-side yeni guest ekle + confirmationNo araması
       if(searchRefreshRef.current) setTimeout(()=>searchRefreshRef.current(tgt?.confirmationNo, tgt, newInfo),200);
     }}/>}
-    {screen==="scan"&&guest&&<CameraScan guest={guest} session={session} onDone={d=>{setScan(d);setScreen("form");}} onBack={()=>setScreen("search")} onLogout={goLogin}/>}
-    {screen==="form"&&guest&&scan&&<DocForm guest={guest} scan={scan} session={session} manual={manualEdit} onSubmit={()=>{const gid=guest?.guestId;setGuest(null);setScan(null);setManualEdit(false);backToSearch(gid);}} onBack={()=>setScreen(manualEdit?"search":"scan")} onLogout={goLogin}/>}
+    {screen==="scan"&&guest&&<CameraScan guest={guest} session={session} onDone={d=>{setScan(d);setScreen("form");}} onBack={backToCleanSearch} onLogout={goLogin}/>}
+    {screen==="form"&&guest&&scan&&<DocForm guest={guest} scan={scan} session={session} manual={manualEdit} onSubmit={()=>{setGuest(null);setScan(null);setManualEdit(false);setScreen("search");
+      // Kayıt bitti: arama ekranı temiz açılır (arama ölçütü, sonuç listesi ve seçili kayıt eski kişide kalmaz); yeni arama yapılır
+      setTimeout(()=>{ searchRefreshRef.current && searchRefreshRef.current(); },100);}} onBack={()=>{ if(manualEdit) backToCleanSearch(); else setScreen("scan"); }} onLogout={goLogin}/>}
     {session&&screen!=="scan"&&<footer className="app-footer">© {t("Bütün hakları saklıdır.")} PROTEL Bilgisayar A.Ş.</footer>}
   </React.Fragment>;
 }

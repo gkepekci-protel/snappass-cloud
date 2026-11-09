@@ -2023,12 +2023,29 @@
     const [apiErr, setApiErr] = useState(""), [selected, setSelected] = useState(null);
     const [profileMap, setProfileMap] = useState({});
     React.useEffect(() => {
-      if (reloadProfileRef) reloadProfileRef.current = async (guestId) => {
+      if (reloadProfileRef) reloadProfileRef.current = async (guestId, confNo) => {
         if (!guestId) return;
-        const det = await getProfileDetails({ hostName: session.hostName, hotelId: session.hotelId, appKey: session.appKey, token: session.token, profileId: guestId, firstName: "", lastName: "" });
+        const base = { hostName: session.hostName, hotelId: session.hotelId, appKey: session.appKey, token: session.token };
+        const det = await getProfileDetails({ ...base, profileId: guestId, firstName: "", lastName: "", fresh: true });
         if (det) setProfileMap((pm) => ({ ...pm, [guestId]: det }));
+        if (confNo) {
+          try {
+            const norm = normalizeReservations(await operaSearch({ ...session, byType: "confirmationNo", query: confNo, tab }));
+            if (norm.length) {
+              setResults((prev) => prev ? [...prev.filter((r) => r.confirmationNo !== confNo), ...norm] : prev);
+              setSelected((sel) => sel && sel.confirmationNo === confNo ? norm.find((x) => String(x.guestId) === String(sel.guestId)) || sel : sel);
+              norm.forEach((g) => {
+                if (g.guestId && String(g.guestId) !== String(guestId) && !String(g.guestId).startsWith("#")) getProfileDetails({ ...base, profileId: g.guestId, firstName: g.firstName, lastName: g.lastName, fresh: true }).then((d) => {
+                  if (d) setProfileMap((pm) => ({ ...pm, [g.guestId]: d }));
+                }).catch(() => {
+                });
+              });
+            }
+          } catch (_) {
+          }
+        }
       };
-    }, [session]);
+    }, [session, tab]);
     const reset = (nt) => {
       setResults(null);
       setQ("");
@@ -4274,7 +4291,7 @@
         forceLabel: t("Yine de bu profile kaydet"),
         ctx: { session, profileId: guest.guestId, name: `${guest.firstName || ""} ${guest.lastName || ""}`.trim(), reservationId: guest.reservationId, isAccompany: !!guest.isAccompany, onChanged: () => {
           setDup(null);
-          onBack && onBack();
+          onSubmit && onSubmit();
         } },
         onForce: () => {
           setDup(null);
@@ -4582,10 +4599,16 @@
         clearInterval(timer);
       };
     }, []);
-    const backToSearch = (reloadGuestId) => {
+    const backToCleanSearch = () => {
+      setScreen("search");
+      setTimeout(() => {
+        searchRefreshRef.current && searchRefreshRef.current();
+      }, 100);
+    };
+    const backToSearch = (reloadGuestId, confNo) => {
       setScreen("search");
       if (reloadGuestId) setTimeout(() => {
-        reloadProfileRef.current && reloadProfileRef.current(reloadGuestId).catch(() => {
+        reloadProfileRef.current && reloadProfileRef.current(reloadGuestId, confNo).catch(() => {
         });
       }, 400);
     };
@@ -4671,13 +4694,18 @@
     } }), screen === "scan" && guest && /* @__PURE__ */ React.createElement(CameraScan, { guest, session, onDone: (d) => {
       setScan(d);
       setScreen("form");
-    }, onBack: () => setScreen("search"), onLogout: goLogin }), screen === "form" && guest && scan && /* @__PURE__ */ React.createElement(DocForm, { guest, scan, session, manual: manualEdit, onSubmit: () => {
-      const gid = guest == null ? void 0 : guest.guestId;
+    }, onBack: backToCleanSearch, onLogout: goLogin }), screen === "form" && guest && scan && /* @__PURE__ */ React.createElement(DocForm, { guest, scan, session, manual: manualEdit, onSubmit: () => {
       setGuest(null);
       setScan(null);
       setManualEdit(false);
-      backToSearch(gid);
-    }, onBack: () => setScreen(manualEdit ? "search" : "scan"), onLogout: goLogin }), session && screen !== "scan" && /* @__PURE__ */ React.createElement("footer", { className: "app-footer" }, "\xA9 ", t("B\xFCt\xFCn haklar\u0131 sakl\u0131d\u0131r."), " PROTEL Bilgisayar A.\u015E."));
+      setScreen("search");
+      setTimeout(() => {
+        searchRefreshRef.current && searchRefreshRef.current();
+      }, 100);
+    }, onBack: () => {
+      if (manualEdit) backToCleanSearch();
+      else setScreen("scan");
+    }, onLogout: goLogin }), session && screen !== "scan" && /* @__PURE__ */ React.createElement("footer", { className: "app-footer" }, "\xA9 ", t("B\xFCt\xFCn haklar\u0131 sakl\u0131d\u0131r."), " PROTEL Bilgisayar A.\u015E."));
   }
   ReactDOM.createRoot(document.getElementById("root")).render(/* @__PURE__ */ React.createElement(App, null));
 })();

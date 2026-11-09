@@ -367,3 +367,16 @@ details.user-item > summary { padding: 8px 14px; }
 .ohip-result { padding: 10px 12px; border-radius: 8px; margin-bottom: 12px; font-size: 14px; }
 .ohip-result.ok { background: #e7f6ec; color: #14532d; border: 1px solid #a7dbb7; }
 .ohip-result.err { background: #fdecec; color: #7f1d1d; border: 1px solid #f1b0b0; }
+
+/* Kullanıcı listesi mobilde kart genişliğini aşmasın: grid öğeleri içerik genişliğine açılmasın, uzun e-posta ve etiketler sarılsın */
+.user-list { grid-template-columns: minmax(0, 1fr); }
+details.user-item { min-width: 0; }
+details.user-item > summary > * { min-width: 0; }
+@media (max-width: 640px) {
+  .ui-who { white-space: normal; overflow-wrap: anywhere; }
+  .ui-mail { display: block; overflow-wrap: anywhere; white-space: normal; }
+  .ui-tags { margin-left: 0; }
+  .ui-kv { white-space: normal; }
+  .ui-perms { width: 100%; }
+  .ui-actions .small, .ui-actions button { flex: 1 1 auto; }
+}
